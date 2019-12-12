@@ -13,7 +13,7 @@ function diagnosticMsgToString(diagMsg: string|ts.DiagnosticMessageChain): strin
         if (typeof curMsg.messageText === "string") {
             return curMsg.messageText;
         }
-        curMsg = curMsg.next;
+        curMsg = curMsg.next as any;
     }
     return "found no error";
 }

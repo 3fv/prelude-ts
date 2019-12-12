@@ -428,8 +428,10 @@ export class Some<T> implements Value {
      * NOTE: we know it's there, since this method
      * belongs to Some, not Option.
      */
-    get(): T {
-        return this.value;
+    get(): T 
+    get(orElse: T): T 
+    get(orElse?: T | undefined): T {
+        return this.value
     }
 
     /**
@@ -732,6 +734,24 @@ export class None<T> implements Value {
      */
     contains(v: T&WithEquality): boolean {
         return false;
+    }
+
+    /**
+     * Shortcut for getOrElse() & getOrThrow
+     * 
+     * Option.of(undefined)
+     *  .get() -> throws
+     * 
+     * Option.of(undefined)
+     *  .get("value") -> value
+     * 
+     * 
+     * @param orElse 
+     */
+    get(): T 
+    get(orElse: T): T 
+    get(orElse?: T | undefined): T {
+        return typeof orElse !== "boolean" && !orElse ? this.getOrThrow() : this.getOrElse(orElse)
     }
 
     /**

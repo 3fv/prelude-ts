@@ -1,12 +1,12 @@
 {
-    "name": "prelude-ts",
+    "name": "@3fv/prelude-ts",
     "version": "0.8.3",
     "description": "A typescript functional programming library",
     "main": "dist/src/index.js",
     "typings": "dist/src/index.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/emmanueltouzery/prelude.ts.git"
+        "url": "git+https://github.com/3fv/prelude.ts.git"
     },
     "dependencies": {
         "hamt_plus": "1.0.2",
@@ -18,7 +18,7 @@
         "typedoc": "0.7.2",
         "@types/node": "12.7.3",
         "benchmark": "2.1.4",
-        "typescript": "3.1.6",
+        "typescript": "3.7.3",
         "browserify": "16.5.0",
         "uglify-js": "3.6.0",
         "immutable": "4.0.0-rc.12",
@@ -41,8 +41,10 @@
     },
     "homepage": "https://github.com/emmanueltouzery/prelude.ts#readme",
     "scripts": {
+        "build": "tsc -b tsconfig.json -w",
         "prepublish": "rm tests/apidoc-*; scripts/prepublish.sh",
         "test": "rm tests/apidoc-*; tsc && node ./dist/tests/Comments.js && tsc && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
+        "publish": "yarn publish --patch --non-interactive",
         "clean": "rm tests/apidoc-*; rm -Rf ./dist",
         "docgen": "./scripts/make_doc.sh",
         "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
