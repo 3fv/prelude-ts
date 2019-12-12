@@ -1,12 +1,16 @@
 {
     "name": "@3fv/prelude-ts",
-    "version": "0.8.3",
+    "version": "0.8.8",
     "description": "A typescript functional programming library",
     "main": "dist/src/index.js",
     "typings": "dist/src/index.d.ts",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/3fv/prelude.ts.git"
+        "url": "ssh://git@github.com/3fv/prelude-ts.git",
+        "directory": "packages/cli"
     },
     "dependencies": {
         "hamt_plus": "1.0.2",
@@ -14,19 +18,19 @@
     },
     "devDependencies": {
         "@types/mocha": "5.2.7",
-        "mocha": "6.2.0",
-        "typedoc": "0.7.2",
         "@types/node": "12.7.3",
-        "benchmark": "2.1.4",
-        "typescript": "3.7.3",
-        "browserify": "16.5.0",
-        "uglify-js": "3.6.0",
-        "immutable": "4.0.0-rc.12",
-        "hamt": "2.2.2",
-        "mocha-testcheck": "1.0.0-rc.0",
-        "request-promise-native": "1.0.7",
         "@types/request-promise-native": "1.0.16",
-        "request": "2.88.0"
+        "benchmark": "2.1.4",
+        "browserify": "16.5.0",
+        "hamt": "2.2.2",
+        "immutable": "4.0.0-rc.12",
+        "mocha": "6.2.0",
+        "mocha-testcheck": "1.0.0-rc.0",
+        "request": "2.88.0",
+        "request-promise-native": "1.0.7",
+        "typedoc": "0.7.2",
+        "typescript": "3.7.3",
+        "uglify-js": "3.6.0"
     },
     "keywords": [
         "typescript",
@@ -44,7 +48,7 @@
         "build": "tsc -b tsconfig.json -w",
         "prepublish": "rm tests/apidoc-*; scripts/prepublish.sh",
         "test": "rm tests/apidoc-*; tsc && node ./dist/tests/Comments.js && tsc && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
-        "publish": "yarn publish --patch --non-interactive",
+        "release": "yarn publish --patch --non-interactive",
         "clean": "rm tests/apidoc-*; rm -Rf ./dist",
         "docgen": "./scripts/make_doc.sh",
         "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
