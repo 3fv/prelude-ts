@@ -90,6 +90,29 @@ export class OptionStatic {
     }
 
     /**
+     * If value is `truthy`, is NOT in [null, undefined,false,0,NaN] 
+     * the `Some` otherwise `None`
+     * 
+     * Option.ofTruthy(5).isSome()
+     *     => true
+     *
+     * Option.ofTruthy(undefined).isSome()
+     *     => false
+     *
+     * Option.ofTruthy(0).isSome()
+     *     => false
+     *
+     * Option.ofTruthy(NaN).isSome()
+     *     => false
+     * @param v 
+     */
+    ofTruthy<T>(v: T): Option<T> {
+        return [false,null,undefined,0,NaN].includes(v as any) ?
+            new Some(v) : 
+            <None<T>>none
+    }
+
+    /**
      * Build a [[Some]], unlike [[OptionStatic.of]], which may build a [[Some]]
      * or a [[None]].
      * Will throw if given undefined.
