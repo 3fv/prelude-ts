@@ -1,5 +1,9 @@
 # prelude-ts
 
+**ALL** credit goes to the original creator of `prelude-ts`
+
+this is simply a published version with several additions
+
 [![NPM version][npm-image]][npm-url]
 [![Tests][circleci-image]][circleci-url]
 [![apidoc][apidoc-image]][apidoc-url]
