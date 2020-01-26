@@ -2,6 +2,7 @@
 set -e
 
 npm install --no-package-lock
+PATH="$PWD/node_modules/.bin:$PATH"
 tsc
 
 # https://github.com/TypeStrong/typedoc/issues/564
