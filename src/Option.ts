@@ -109,9 +109,9 @@ export class OptionStatic {
      * @param v 
      */
     ofTruthy<T>(v: T): Option<T> {
-        return [false, null, undefined, 0, NaN].includes(v as any) ?
-            new Some(v) :
-            <None<T>>none
+      return [false, null, undefined, 0, NaN].includes(v as any) ?
+        <None<T>>none :
+        new Some(v)
     }
 
     /**
