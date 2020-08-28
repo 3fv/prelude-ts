@@ -95,16 +95,16 @@ export class OptionStatic {
      * If value is `truthy`, is NOT in [null, undefined,false,0,NaN]
      * the `Some` otherwise `None`
      *
-     * Option.ofTruthy(5).isSome()
+     *     Option.ofTruthy(5).isSome()
      *     => true
      *
-     * Option.ofTruthy(undefined).isSome()
+     *     Option.ofTruthy(undefined).isSome()
      *     => false
      *
-     * Option.ofTruthy(0).isSome()
+     *     Option.ofTruthy(0).isSome()
      *     => false
      *
-     * Option.ofTruthy(NaN).isSome()
+     *     Option.ofTruthy(NaN).isSome()
      *     => false
      * @param v
      */
@@ -945,7 +945,30 @@ export class None<T> implements Value {
         fn();
         return this;
     }
-
+    
+    /**
+     * Execute a side-effecting function if the option
+     * is a Some; returns the option.
+     * @param fn
+     * @return {this}
+     */
+    tap(fn: (v: T) => any): Option<T> {
+        return this.ifSome(fn);
+    }
+    
+    /**
+     * Execute a side-effecting function if the option
+     * is a Some; returns the option.
+     *
+     *
+     * @param fn
+     * @param predicate
+     * @return {this}
+     */
+    tapIf(predicate: (v: T) => boolean, fn: (v: T) => any): Option<T> {
+        return this;
+    }
+    
     /**
      * Handle both branches of the option and return a value
      * (can also be used for side-effects).

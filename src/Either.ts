@@ -328,23 +328,23 @@ export class EitherStatic {
      *
      * When using typescript, to help the compiler infer the left type,
      * you can either pass a second parameter like `{} as <type>`, or
-     * call with `try_<L,R>(...)`.
+     * call with `try<L,R>(...)`.
      *
-     *     Either.try_(Math.random, {} as string);
+     *     Either.try(Math.random, {} as string);
      *     => Either.right(0.49884723907769635)
      *
-     *     Either.try_(() => undefined);
+     *     Either.try(() => undefined);
      *     => throws
      *
-     *     Either.try_(() => {throw "x"});
+     *     Either.try(() => {throw "x"});
      *     => Either.left("x")
      *
      * Also see [[EitherStatic.lift]], [[OptionStatic.try_]],
      * [[OptionStatic.tryNullable]]
      */
-    try_<L,T>(fn:()=>T, witness: L): Either<L,T>
-    try_<T, Err extends Error = Error>(fn:()=>T, witness: Err): Either<Err,T>
-    try_(fn:()=>any, witness:any = undefined) {
+    try<L,T>(fn:()=>T, witness: L): Either<L,T>
+    try<T, Err extends Error = Error>(fn:()=>T): Either<Err,T>
+    try(fn:()=>any, witness:any = undefined) {
         return Either.lift(fn)();
     }
 }

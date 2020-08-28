@@ -35,7 +35,7 @@ function getCodeSamples(commentText: string): Vector<string> {
                 // => nothing to do
                 return sofar;
             }
-            const lineCode = cur.replace(/^\*    /, "");
+            const lineCode = cur.replace(/^\*\s\s\s\s/, "");
             if (sofar.open.isSome()) {
                 // this is code, and we have an open piece
                 // => append to it
@@ -92,7 +92,7 @@ function getCodeSampleInfo(identifier: string, codeSample: string): SampleInfo {
 function storeInVariable(code: string) {
     if (code.replace(/[^;]/g, "").length <= 1) {
         // only one ";" or less => single line.
-        return "const xvar = " + code;
+        return code.length > 1 ? "const xvar = " + code : "";
     }
     // assuming several lines
     // we rely on indentation to find out where to insert

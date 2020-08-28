@@ -47,10 +47,13 @@
     "scripts": {
         "build": "tsc -b tsconfig.json",
         "build:watch": "yarn run build -- -w",
-        "prepublish": "yarn clean; scripts/prepublish.sh",
-        "test": "yarn clean; tsc && node ./dist/tests/Comments.js && tsc && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
+        "prepublish": "yarn test:clean && scripts/prepublish.sh",
+        "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
+        "test:clean": "rm -f tests/apidoc-*",
+        "retest": "yarn clean; yarn test",
+        "test": "yarn test:generate && yarn build && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
         "release": "yarn publish --patch --non-interactive",
-        "clean": "rm -f tests/apidoc-*; rm -Rf ./dist",
+        "clean": "yarn test:clean; rm -Rf ./dist",
         "docgen": "./scripts/make_doc.sh",
         "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
     }
