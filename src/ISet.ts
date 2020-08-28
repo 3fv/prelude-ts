@@ -4,6 +4,7 @@ import { Collection } from "./Collection";
 import { Vector } from "./Vector";
 import { LinkedList } from "./LinkedList";
 import { Option } from "./Option";
+import { ToString } from "./ToString"
 
 /**
  * Ability to specify a sorting function.
@@ -36,7 +37,7 @@ export function isSortOnSpec<T>(sortSpec: SortOnSpec<T> | SortBySpec<T>): sortSp
  * A generic interface for set-like implementations.
  * @param T the item type
  */
-export interface ISet<T> extends Collection<T> {
+export interface ISet<T extends ToString> extends Collection<T> {
 
     /**
      * Returns the number of elements in the set.

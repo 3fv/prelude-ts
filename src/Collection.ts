@@ -3,8 +3,9 @@ import { Value } from "./Value";
 import { Option } from "./Option";
 import { HashMap } from "./HashMap";
 import { Foldable } from "./Foldable";
+import { ToString } from "./ToString"
 
-export interface Collection<T> extends Value, Iterable<T>, Foldable<T> {
+export interface Collection<T extends ToString> extends Value, Iterable<T>, Foldable<T> {
 
     /**
      * Get the length of the collection.

@@ -342,8 +342,10 @@ export class EitherStatic {
      * Also see [[EitherStatic.lift]], [[OptionStatic.try_]],
      * [[OptionStatic.tryNullable]]
      */
-    try_<L,T>(fn:()=>T, witness?: L): Either<L,T> {
-        return Either.lift<[],L,T>(fn)();
+    try_<L,T>(fn:()=>T, witness: L): Either<L,T>
+    try_<T, Err extends Error = Error>(fn:()=>T, witness: Err): Either<Err,T>
+    try_(fn:()=>any, witness:any = undefined) {
+        return Either.lift(fn)();
     }
 }
 

@@ -92,9 +92,9 @@ export class OptionStatic {
     }
 
     /**
-     * If value is `truthy`, is NOT in [null, undefined,false,0,NaN] 
+     * If value is `truthy`, is NOT in [null, undefined,false,0,NaN]
      * the `Some` otherwise `None`
-     * 
+     *
      * Option.ofTruthy(5).isSome()
      *     => true
      *
@@ -106,7 +106,7 @@ export class OptionStatic {
      *
      * Option.ofTruthy(NaN).isSome()
      *     => false
-     * @param v 
+     * @param v
      */
     ofTruthy<T>(v: T): Option<T> {
       return [false, null, undefined, 0, NaN].includes(v as any) ?
@@ -350,22 +350,22 @@ export class OptionStatic {
      * and call it, return an [[Option]] instead.
      * undefined becomes a [[None]], everything else a [[Some]]
      *
-     *     Option.try_(Math.random);
+     *     Option.try(Math.random);
      *     => Option.of(0.49884723907769635)
      *
-     *     Option.try_(()=>undefined);
+     *     Option.try(()=>undefined);
      *     => Option.none()
      *
-     *     Option.try_(()=>null);
+     *     Option.try(()=>null);
      *     => Option.of(null)
      *
-     *     Option.try_(()=>{throw "x"});
+     *     Option.try(()=>{throw "x"});
      *     => Option.none()
      *
      * Also see [[OptionStatic.tryNullable]], [[OptionStatic.lift]],
      * [[OptionStatic.liftNullable]], [[EitherStatic.try_]].
      */
-    try_<T>(fn: () => T | undefined): Option<T> {
+    try<T>(fn: () => T | undefined): Option<T> {
         return Option.lift(fn)();
     }
 
@@ -392,6 +392,8 @@ export class OptionStatic {
     tryNullable<T>(fn: () => T | null | undefined): Option<T> {
         return Option.liftNullable(fn)();
     }
+    
+    
 }
 
 /**
@@ -549,6 +551,48 @@ export class Some<T> implements Value {
      */
     map<U>(fn: (v: T) => U): Option<U> {
         return Option.of(fn(this.value));
+    }
+    
+    /**
+     * Execute a side-effecting function if the option
+     * is a Some; returns the option.
+     *     Option.of(5).tap(x => x*2)
+     *     => Option.of(5)
+     *
+     *     Option.of({ a: 1 }).tap(o => {
+     *       o.a++
+     *     })
+     *     => Option.of({ a: 2 })
+     *
+     * @param fn
+     * @return {this}
+     */
+    tap(fn: (v: T) => any): Option<T> {
+        return this.ifSome(fn)
+    }
+    
+    /**
+     * Execute a side-effecting function if the option
+     * is a Some; returns the option.
+     *     Option.of({ a: 1 }).tap(o => {
+     *       o.a++
+     *     })
+     *     => Option.of({ a: 2 })
+     *
+     *     Option.of({ a: 1 }).tapIf(
+         *     o => o.a !== 1,
+         *     o => {
+         *       o.a++
+         *     }
+     *     )
+     *     => Option.of({ a: 1 })
+     *
+     * @param fn
+     * @param predicate
+     * @return {this}
+     */
+    tapIf(predicate: (v: T) => boolean, fn: (v: T) => any): Option<T> {
+        return !predicate(this.value) ? this : this.tap(fn)
     }
 
     /**
@@ -764,15 +808,15 @@ export class None<T> implements Value {
 
     /**
      * Shortcut for getOrElse() & getOrThrow
-     * 
+     *
      * Option.of(undefined)
      *  .get() -> throws
-     * 
+     *
      * Option.of(undefined)
      *  .get("value") -> value
-     * 
-     * 
-     * @param orElse 
+     *
+     *
+     * @param orElse
      */
     get(): T
     get(orElse: T): T

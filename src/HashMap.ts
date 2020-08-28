@@ -9,6 +9,7 @@ import { Vector } from "./Vector";
 import { LinkedList } from "./LinkedList";
 import * as SeqHelpers from "./SeqHelpers";
 import { inspect } from "./Value";
+import { ToString } from "./ToString"
 const hamt: any = require("hamt_plus");
 
 // HashMap could extend Collection, conceptually. But I'm
@@ -24,7 +25,7 @@ const hamt: any = require("hamt_plus");
  * @param K the key type
  * @param V the value type
  */
-export class HashMap<K,V> implements IMap<K,V> {
+export class HashMap<K extends ToString,V> implements IMap<K,V> {
 
     /**
      * @hidden
@@ -129,12 +130,21 @@ export class HashMap<K,V> implements IMap<K,V> {
     get(k: K & WithEquality): Option<V> {
         return Option.of<V>(this.hamt.get(k));
     }
-
+    
+    /**
+     * Get map entries.
+     *
+     * @returns {Iterator<[K, V]>}
+     */
+    entries(): Iterator<[K,V]> {
+        return this.hamt.entries();
+    }
+    
     /**
      * Implementation of the Iterator interface.
      */
     [Symbol.iterator](): Iterator<[K,V]> {
-        return this.hamt.entries();
+        return this.entries();
     }
 
     /**
@@ -537,7 +547,7 @@ export class HashMap<K,V> implements IMap<K,V> {
      *         .toObjectDictionary(x=>x);
      *     => {a:1,b:2}
      */
-    toObjectDictionary(keyConvert:(k:K)=>string): {[index:string]:V} {
+    toObjectDictionary(keyConvert:((k:K)=>string) = (k => k.toString())): {[index:string]:V} {
         return this.foldLeft<{[index:string]:V}>({}, (soFar,cur)=> {
             soFar[keyConvert(cur[0])] = cur[1];
             return soFar;

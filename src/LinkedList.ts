@@ -31,6 +31,7 @@ import { HashSet } from "./HashSet";
 import { Seq, IterableArray } from "./Seq";
 import { Stream } from "./Stream";
 import * as SeqHelpers from "./SeqHelpers";
+import { ToString } from "./ToString"
 
 /**
  * Holds the "static methods" for [[LinkedList]]
@@ -39,16 +40,16 @@ export class LinkedListStatic {
     /**
      * The empty stream
      */
-    empty<T>(): LinkedList<T> {
+    empty<T extends ToString>(): LinkedList<T> {
         return <EmptyLinkedList<T>>emptyLinkedList;
     }
 
     /**
      * Create a LinkedList with the elements you give.
      */
-    of<T>(elt: T, ...elts:T[]): ConsLinkedList<T>;
-    of<T>(...elts:T[]): LinkedList<T>;
-    of<T>(...elts:T[]): LinkedList<T> {
+    of<T extends ToString>(elt: T, ...elts:T[]): ConsLinkedList<T>;
+    of<T extends ToString>(...elts:T[]): LinkedList<T>;
+    of<T extends ToString>(...elts:T[]): LinkedList<T> {
         return LinkedList.ofIterable(elts);
     }
 
@@ -158,7 +159,7 @@ export const LinkedList = new LinkedListStatic();
  * "static methods" available through [[LinkedListStatic]]
  * @param T the item type
  */
-export type LinkedList<T> = EmptyLinkedList<T> | ConsLinkedList<T>;
+export type LinkedList<T extends ToString> = EmptyLinkedList<T> | ConsLinkedList<T>;
 
 /**
  * EmptyLinkedList is the empty linked list; every non-empty
@@ -167,7 +168,7 @@ export type LinkedList<T> = EmptyLinkedList<T> | ConsLinkedList<T>;
  * "static methods" available through [[LinkedListStatic]]
  * @param T the item type
  */
-export class EmptyLinkedList<T> implements Seq<T> {
+export class EmptyLinkedList<T extends ToString> implements Seq<T> {
 
     /**
      * @hidden
@@ -875,7 +876,7 @@ export class EmptyLinkedList<T> implements Seq<T> {
  * "static methods" available through [[LinkedListStatic]]
  * @param T the item type
  */
-export class ConsLinkedList<T> implements Seq<T> {
+export class ConsLinkedList<T extends ToString> implements Seq<T> {
 
     /**
      * @hidden
