@@ -3,7 +3,7 @@ set -e
 
 npm install --no-package-lock
 PATH="$PWD/node_modules/.bin:$PATH"
-tsc
+tsc -p tsconfig.docgen.json
 
 # https://github.com/TypeStrong/typedoc/issues/564
 # i would like typedoc to group functions in categories but it's not supported
@@ -34,7 +34,7 @@ sed -i "s/const Function5/const function5Glabiboulga/" src/Function.ts
 sed -i "s/const Predicate/const predicateGlabiboulga/" src/Predicate.ts
 
 # generate with typedoc
-./node_modules/typedoc/bin/typedoc --exclude "**/make_doc_extra/*.ts" --mode file --out apidoc --excludePrivate --excludeExternals --excludeNotExported --ignoreCompilerErrors src/index.ts
+./node_modules/typedoc/bin/typedoc --exclude "**/make_doc_extra/*.ts" --mode file --out apidoc --excludePrivate --excludeExternals --excludeNotExported --ignoreCompilerErrors --tsconfig tsconfig.prepublish.json src/index.ts
 
 # revert the 'Option' & 'Either' constant rename
 find apidoc -name "*.html" -exec sed -i 's/optionglabiboulga/Option/g' \{\} \;

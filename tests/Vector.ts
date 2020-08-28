@@ -2,6 +2,8 @@ import { Vector } from "../src/Vector";
 import { Stream } from "../src/Stream";
 import { MyClass } from "./SampleData";
 import { typeOf } from "../src/Comparison";
+import { Option } from "../src/Option";
+import { assertFailCompile } from "./TestHelpers";
 import * as SeqTest from "./Seq";
 import * as assert from 'assert'
 
@@ -79,6 +81,41 @@ describe("Vector extra methods", () => {
     });
 });
 
+describe("Vector search methods beside those defined in Seq", () => {
+    it("should find last by predicate", () => {
+        const x = Vector.of(1,2,3,4);
+        assert.ok(
+            Option.some(4).equals(
+                x.findLast(i => i % 2 === 0)
+            )
+        );
+    });
+    it("should return none from findList if not found", () => {
+        const x = Vector.of(1,2,3,4);
+        assert.ok(
+            Option.none().equals(
+                x.findLast(i => i === 5)
+            )
+        );
+    });
+    it("should find first index", () => {
+        const x = Vector.of(1,2,3,4);
+        assert.ok(
+            Option.some(1).equals(
+                x.findIndex(i => i % 2 === 0)
+            )
+        );
+    });
+    it("should return none from findIndex it not found", () => {
+        const x = Vector.of(1,2,3,4);
+        assert.ok(
+            Option.none().equals(
+                x.findIndex(i => i === 5)
+            )
+        );
+    });
+});
+
 function checkTake<T>(longer: Vector<T>, n: number, shorter: Vector<T>) {
     const arrayBefore = longer.toArray();
     assert.deepStrictEqual(
@@ -139,16 +176,69 @@ describe("Vector.appendAll() implementation", () => {
     });
 });
 describe("static Vector.zip", () => {
-    const r = Vector.zip<[number,string,number]>([1,2], ["a", "b"], Vector.of(11,10,9));
-    assert.equal(2, r.length());
-    // check that the types are properly inferred
-    const head: [number,string,number] = r.head().getOrThrow();
-    assert.equal(1, head[0]);
-    assert.equal("a", head[1]);
-    assert.equal(11, head[2]);
+    it("performs static correctly", () => {
+        const r = Vector.zip<[number,string,number]>([1,2], ["a", "b"], Vector.of(11,10,9));
+        assert.equal(2, r.length());
+        // check that the types are properly inferred
+        const head: [number,string,number] = r.head().getOrThrow();
+        assert.equal(1, head[0]);
+        assert.equal("a", head[1]);
+        assert.equal(11, head[2]);
 
-    const other = r.get(1).getOrThrow();
-    assert.equal(2, other[0]);
-    assert.equal("b", other[1]);
-    assert.equal(10, other[2]);
+        const other = r.get(1).getOrThrow();
+        assert.equal(2, other[0]);
+        assert.equal("b", other[1]);
+        assert.equal(10, other[2]);
+    });
+});
+describe("vector replaceFirst", () => {
+    it("empty vector", () => {
+        assert.ok(Vector.empty<number>().equals(Vector.empty<number>().replaceFirst(2, 3)));
+    });
+    it("value not present", () => {
+        assert.ok(Vector.of(1, 3, 4, 5).equals(Vector.of(1, 3, 4, 5).replaceFirst(2, 3)));
+    });
+    it("type with real equals", () => {
+        assert.ok(Vector.of(new MyClass("c", 2), new MyClass("b", 2), new MyClass("a", 1)).equals(
+            Vector.of(new MyClass("a", 1), new MyClass("b", 2), new MyClass("a", 1))
+                .replaceFirst(new MyClass("a", 1), new MyClass("c", 2))));
+    });
+    it("should fail compilation on replace if not equality", () =>
+       assertFailCompile(
+           "Vector.of([1]).replaceFirst([1], [2])", "Argument of type \'" +
+               "number[]\' is not assignable to parameter"));
+});
+describe("vector replaceAll", () => {
+    it("empty vector", () => {
+        assert.ok(Vector.empty<number>().equals(Vector.empty<number>().replaceAll(2, 3)));
+    });
+    it("value not present", () => {
+        assert.ok(Vector.of(1, 3, 4, 5).equals(Vector.of(1, 3, 4, 5).replaceFirst(2, 3)));
+    });
+    it("type with real equals", () => {
+        assert.ok(Vector.of(new MyClass("c", 2), new MyClass("b", 2), new MyClass("c", 2)).equals(
+            Vector.of(new MyClass("a", 1), new MyClass("b", 2), new MyClass("a", 1))
+                .replaceAll(new MyClass("a", 1), new MyClass("c", 2))));
+    });
+    it("should fail compilation on replace if not equality", () =>
+       assertFailCompile(
+           "Vector.of([1]).replaceAll([1], [2])", "Argument of type \'" +
+               "number[]\' is not assignable to parameter"));
+});
+describe("vector indexOf", () => {
+    it("empty vector", () => {
+        assert.ok(Option.none<number>().equals(Vector.empty<number>().indexOf(2)));
+    });
+    it("value not present", () => {
+        assert.ok(Option.none<number>().equals(Vector.of(1, 3, 4, 5).indexOf(2)));
+    });
+    it("type with real equals", () => {
+        assert.ok(Option.of(1).equals(
+            Vector.of(new MyClass("a", 1), new MyClass("b", 2), new MyClass("a", 1))
+                .indexOf(new MyClass("b", 2))));
+    });
+    it("should fail compilation on replace if not equality", () =>
+       assertFailCompile(
+           "Vector.of([1]).indexOf([1])", "Argument of type \'" +
+               "number[]\' is not assignable to parameter"));
 });

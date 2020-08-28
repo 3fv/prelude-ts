@@ -647,6 +647,14 @@ export class Some<T> implements Value {
         return Either.right<L, T>(this.value);
     }
 
+    /**
+     * If this is a Some, return this object.
+     * If this is a None, return the result of the function.
+     */
+    orCall(_: () => Option<T>): Option<T> {
+      return this;
+    }
+
     hasTrueEquality<T>(): boolean {
         return optionHasTrueEquality(this);
     }
@@ -940,6 +948,14 @@ export class None<T> implements Value {
      */
     toEither<L>(left: L): Either<L, T> {
         return Either.left<L, T>(left);
+    }
+
+    /**
+     * If this is a Some, return this object.
+     * If this is a None, return the result of the function.
+     */
+    orCall(fn: () => Option<T>): Option<T> {
+      return fn();
     }
 
     hasTrueEquality<T>(): boolean {
