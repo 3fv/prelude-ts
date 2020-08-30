@@ -1,6 +1,6 @@
 {
     "name": "@3fv/prelude-ts",
-    "version": "0.8.15",
+    "version": "0.8.16",
     "description": "A typescript functional programming library",
     "main": "dist/src/index.js",
     "typings": "dist/src/index.d.ts",
@@ -9,8 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com/3fv/prelude-ts.git",
-        "directory": "packages/cli"
+        "url": "ssh://git@github.com/3fv/prelude-ts.git"
     },
     "dependencies": {
         "hamt_plus": "1.0.2",
@@ -18,20 +17,20 @@
     },
     "devDependencies": {
         "@types/mocha": "5.2.7",
-        "mocha": "6.2.0",
-        "typedoc": "0.7.2",
         "@types/node": "12.7.3",
+        "@types/request-promise-native": "1.0.17",
         "benchmark": "2.1.4",
-        "typescript": "3.1.6",
         "browserify": "16.5.0",
-        "uglify-js": "3.6.0",
-        "immutable": "4.0.0-rc.12",
         "hamt": "2.2.2",
+        "immutable": "4.0.0-rc.12",
+        "mocha": "6.2.0",
         "mocha-testcheck": "1.0.0-rc.0",
-        "request-promise-native": "1.0.7",
-        "@types/request-promise-native": "1.0.16",
+        "prettier": "^2.1.1",
         "request": "2.88.0",
-        "handlebars": "4.5.3"
+        "request-promise-native": "1.0.9",
+        "typedoc": "0.7.2",
+        "typescript": "4.0.2",
+        "uglify-js": "3.6.0"
     },
     "keywords": [
         "typescript",
@@ -48,13 +47,17 @@
     "scripts": {
         "build": "tsc -b tsconfig.json",
         "build:watch": "yarn run build -- -w",
-        "prepublish": "yarn run clean; scripts/prepublish.sh",
-        "test": "rm -f tests/apidoc-*; tsc && node ./dist/tests/Comments.js && tsc && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
+        "prepublish": "yarn test:clean && scripts/prepublish.sh",
+        "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
+        "test:clean": "rm -f tests/apidoc-*",
+        "retest": "yarn clean; yarn test",
+        "test": "yarn test:generate && yarn build && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
         "release": "yarn publish --patch --non-interactive",
-        "clean": "rm -f tests/apidoc-*; rm -Rf ./dist",
+        "clean": "yarn test:clean; rm -Rf ./dist",
         "docgen": "./scripts/make_doc.sh",
-        "benchmarks": "tsc -p tsconfig.benchmarks.json && node ./dist/benchmarks/bench.js"
+        "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
     },
+    
     "files": [
         "dist",
         "src",

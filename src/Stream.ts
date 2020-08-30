@@ -30,13 +30,14 @@ import { Seq, IterableArray } from "./Seq";
 import { Lazy } from "./Lazy";
 import { LinkedList } from "./LinkedList";
 import * as SeqHelpers from "./SeqHelpers";
+import { ToString } from "./ToString"
 
 /**
  * A Stream is either [[EmptyStream]] or [[ConsStream]]
  * "static methods" available through [[StreamStatic]]
  * @param T the item type
  */
-export type Stream<T> = EmptyStream<T> | ConsStream<T>;
+export type Stream<T extends ToString> = EmptyStream<T> | ConsStream<T>;
 
 /**
  * Holds the "static methods" for [[Stream]]
@@ -202,7 +203,7 @@ export const Stream = new StreamStatic();
  * "static methods" available through [[StreamStatic]]
  * @param T the item type
  */
-export class EmptyStream<T> implements Seq<T> {
+export class EmptyStream<T extends ToString> implements Seq<T> {
 
     /**
      * @hidden

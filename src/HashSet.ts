@@ -9,6 +9,7 @@ import { WithEquality, hasEquals, HasEquals,
 import * as SeqHelpers from "./SeqHelpers";
 import { contractTrueEquality } from "./Contract";
 import { inspect } from "./Value";
+import { ToString } from "./ToString"
 const hamt: any = require("hamt_plus");
 
 /**
@@ -16,7 +17,7 @@ const hamt: any = require("hamt_plus");
  * may be equal. A value can only be present once.
  * @param T the item type
  */
-export class HashSet<T> implements ISet<T> {
+export class HashSet<T extends ToString> implements ISet<T> {
 
     /**
      * @hidden

@@ -4,6 +4,7 @@ import { HashSet } from "./HashSet";
 import { Option } from "./Option";
 import { Collection } from "./Collection";
 import { Stream } from "./Stream";
+import { ToString } from "./ToString"
 
 /**
  * IterableArray can take a type and apply iterable to its
@@ -18,7 +19,7 @@ export type IterableArray<T> = { [K in keyof T] : Iterable<T[K]> };
  * A generic interface for list-like implementations.
  * @param T the item type
  */
-export interface Seq<T> extends Collection<T> {
+export interface Seq<T extends ToString> extends Collection<T> {
 
     /**
      * Append an element at the end of the collection.

@@ -1,6 +1,7 @@
 import { WithEquality } from "./Comparison";
 
 import * as util from 'util';
+import { ToString } from "./ToString"
 
 /**
  * @hidden
@@ -8,7 +9,7 @@ import * as util from 'util';
 // @ts-ignore -- see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30241
 export const inspect: unique symbol = util.inspect.custom;
 
-export interface Value {
+export interface Value extends ToString {
 
     /**
      * Two objects are equal if they represent the same value,
@@ -24,10 +25,7 @@ export interface Value {
      */
     hashCode(): number;
 
-    /**
-     * Get a human-friendly string representation of that value.
-     */
-    toString(): string;
+    
 
     /**
      * Used by the node REPL to display values.

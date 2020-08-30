@@ -8,6 +8,7 @@ import { WithEquality, areEqual, getHashCode,
          Ordering, ToOrderable } from "./Comparison";
 import * as SeqHelpers from "./SeqHelpers";
 import * as L from "list";
+import { ToString } from "./ToString"
 
 /**
  * A general-purpose list class with all-around good performance.
@@ -15,7 +16,7 @@ import * as L from "list";
  * It's backed by a bit-mapped vector trie.
  * @param T the item type
  */
-export class Vector<T> implements Seq<T> {
+export class Vector<T extends ToString> implements Seq<T> {
 
     /**
      * @hidden
@@ -27,24 +28,27 @@ export class Vector<T> implements Seq<T> {
      * The empty vector.
      * @param T the item type
      */
-    static empty<T>(): Vector<T> {
+    static empty<T extends ToString>(): Vector<T> {
         return new Vector(L.empty());
     }
 
     /**
      * Build a vector from a series of items (any number, as parameters)
-     * @param T the item type
+     * @param data: T[]
+     * @return {Vector<T>}
      */
-    static of<T>(...data: T[]): Vector<T> {
+    static of<T extends ToString>(...data: T[]): Vector<T> {
         return Vector.ofIterable(data);
     }
 
     /**
      * Build a vector from any iterable, which means also
      * an array for instance.
-     * @param T the item type
+     *
+     * @param elts: Iterable<T> the item type
+     * @return {Vector<T>}
      */
-    static ofIterable<T>(elts: Iterable<T>): Vector<T> {
+    static ofIterable<T extends ToString>(elts: Iterable<T>): Vector<T> {
         return new Vector(L.from(elts));
     }
 
@@ -55,7 +59,7 @@ export class Vector<T> implements Seq<T> {
      *         .filter(Vector.isEmpty)
      *     => LinkedList.of(Vector.empty<number>())
      */
-    static isEmpty<T>(v: Vector<T>): boolean {
+    static isEmpty<T extends ToString>(v: Vector<T>): boolean {
         return v.isEmpty();
     }
 
@@ -66,7 +70,7 @@ export class Vector<T> implements Seq<T> {
      *         .filter(Vector.isNotEmpty)
      *     => LinkedList.of(Vector.of(1))
      */
-    static isNotEmpty<T>(v: Vector<T>): boolean {
+    static isNotEmpty<T extends ToString>(v: Vector<T>): boolean {
         return !v.isEmpty();
     }
 

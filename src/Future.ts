@@ -2,6 +2,7 @@ import { Vector } from "./Vector";
 import { Option } from "./Option";
 import { Either } from "./Either";
 import { HashMap } from "./HashMap";
+import { ToString } from "./ToString"
 
 /**
  * A Future is the equivalent, and ultimately wraps, a javascript Promise.
@@ -13,7 +14,7 @@ import { HashMap } from "./HashMap";
  * be computed once at most. Once it's computed, calling [[Future.map]] or
  * `await` will return instantly.
  */
-export class Future<T> {
+export class Future<T extends ToString> {
 
     // careful cause i can't have my type be F<F<T>>
     // while the code does F<T> as JS's then does!!!
@@ -95,7 +96,7 @@ export class Future<T> {
     then<TResult1 = T, TResult2 = never>(
         onfulfilled: ((value: T) => TResult1 | PromiseLike<TResult1>),
         onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2> {
-        return this.promise.then(([x]) => onfulfilled(x), rejected => onrejected?onrejected(rejected):Promise.reject<TResult2>(rejected)); 
+        return this.promise.then(([x]) => onfulfilled(x), rejected => onrejected?onrejected(rejected):Promise.reject<TResult2>(rejected));
     }
 
     /**
@@ -160,7 +161,7 @@ export class Future<T> {
     /**
      * Takes a list, a function that can transform list elements
      * to futures, then return a Future containing a list of
-     * the transformed elements. 
+     * the transformed elements.
      *
      * But if a single element results in failure, the result also
      * resolves to a failure.
