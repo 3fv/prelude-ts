@@ -143,6 +143,51 @@ export class Vector<T extends ToString> implements Seq<T> {
     }
 
     /**
+     * Replace the first occurence (if any) of the element you give by
+     * the new value you give.
+     *
+     *     Vector.of(1, 2, 3, 4, 2).replaceFirst(2, 5)
+     *     => Vector.of(1, 5, 3, 4, 2)
+     * 
+     */
+    replaceFirst(element: T&WithEquality, newVal: T&WithEquality): Vector<T> {
+        // it's a little annoying that areEqual will check whether the element
+        // has an equals function for each element in the list, but then
+        // what if the list allows null or undefined and the newVal is null or
+        // undefined? With type erasure then I don't know what equality to use
+        // on the next elements
+        const index = L.findIndex(v => areEqual(v, element), this._list);
+        return (index >= 0)
+            ? new Vector(L.update(index, newVal, this._list))
+            : this;
+    }
+
+    /**
+     * Replace all occurences of the element you give by
+     * the new value you give.
+     *
+     *     Vector.of(1, 2, 3, 4, 2).replaceAll(2, 5)
+     *     => Vector.of(1, 5, 3, 4, 5)
+     *
+     */
+    replaceAll(element: T&WithEquality, newVal: T&WithEquality): Vector<T> {
+        // if we're going to update many elements, then append in a loop
+        // would give better perf (not copying multiple times the same slice).
+        // if we won't update that many, update in a loop would give better perf...
+        // assuming it's the latter case.
+        let idx = 0;
+        return this.foldLeft(
+            this as Vector<T>,
+            (sofar, cur) => {
+                const r = areEqual(cur, element)
+                    ? new Vector(L.update(idx, newVal, sofar._list))
+                    : sofar;
+                ++idx;
+                return r;
+            });
+    }
+
+    /**
      * Append an element at the end of the collection.
      */
     append(val:T): Vector<T> {
@@ -211,12 +256,30 @@ export class Vector<T extends ToString> implements Seq<T> {
     }
 
     /**
-     * Search for an item matching the predicate you pass,
+     * Search for the first item matching the predicate you pass,
      * return Option.Some of that element if found,
      * Option.None otherwise.
      */
     find(predicate:(v:T)=>boolean): Option<T> {
         return Option.of(L.find(predicate, this._list));
+    }
+
+    /**
+     * Search for the last item matching the predicate you pass,
+     * return Option.Some of that element if found,
+     * Option.None otherwise.
+     */
+    findLast(predicate:(v:T)=>boolean): Option<T> {
+        return Option.of(L.findLast(predicate, this._list));
+    }
+
+    /**
+     * Search for the first item matching the predicate you pass,
+     * returning its index in the form of Option.Some if found,
+     * Option.None otherwise.
+     */
+    findIndex(predicate:(v:T)=>boolean): Option<number> {
+        return Option.of(L.findIndex(predicate, this._list)).filter(i => i != -1);
     }
 
     /**
@@ -410,8 +473,17 @@ export class Vector<T extends ToString> implements Seq<T> {
         return L.foldr(fn, zero, this._list);
     }
 
-    // indexOf(element:T, fromIndex:number): number {
-    // }
+
+    /**
+     * Returns the index of the first occurence of the value you give, if present
+     *
+     *     Vector.of(1, 2, 3, 4, 3).indexOf(3)
+     *     => Option.of(2)
+     */
+    indexOf(element: T & WithEquality): Option<number> {
+        return Option.of(L.findIndex(v => areEqual(v, element), this._list))
+            .filter(i => i >= 0);
+    }
 
     /**
      * Randomly reorder the elements of the collection.

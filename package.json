@@ -56,5 +56,13 @@
         "clean": "yarn test:clean; rm -Rf ./dist",
         "docgen": "./scripts/make_doc.sh",
         "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
-    }
+    },
+    
+    "files": [
+        "dist",
+        "src",
+        "LICENSE.TXT",
+        "README.md",
+        "package.json"
+    ]
 }
