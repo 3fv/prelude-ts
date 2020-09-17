@@ -256,7 +256,7 @@ export class EitherStatic {
      * @param A the object property type specifying the parameters for your function
      * @param B the type returned by your function, returned wrapped in an either by liftAp.
      */
-    liftApAcc<L,A,B>(fn:(x:A)=>B, leftWitness?: L): (x: {[K in keyof A]: Either<L,A[K]>;}) => Either<Vector<L>,B> {
+    liftApAcc<L,A,B>(fn:((x:A)=>B), leftWitness?: L): (x: {[K in keyof A]: Either<L,A[K]>;}) => Either<Vector<L>,B> {
         const leftErrs: L[] = [];
         return x => {
             const copy:A = <any>{};
