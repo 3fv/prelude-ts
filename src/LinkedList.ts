@@ -832,7 +832,11 @@ export class EmptyLinkedList<T extends ToString> implements Seq<T> {
     transform<U>(converter:(x:LinkedList<T>)=>U): U {
         return converter(this);
     }
-
+    
+    pluck<K extends keyof T>(key:K): Seq<T[K]> {
+        return SeqHelpers.pluck(this,key) // Stream.of(...this.ma);
+    }
+    
     /**
      * Two objects are equal if they represent the same value,
      * regardless of whether they are the same object physically
@@ -1738,7 +1742,11 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
     transform<U>(converter:(x:LinkedList<T>)=>U): U {
         return converter(this);
     }
-
+    
+    pluck<K extends keyof T>(key:K): Seq<T[K]> {
+        return SeqHelpers.pluck(this,key) // Stream.of(...this.ma);
+    }
+    
     /**
      * Two objects are equal if they represent the same value,
      * regardless of whether they are the same object physically

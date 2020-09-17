@@ -95,6 +95,14 @@ export function distinctBy<T,U>(seq: Collection<T>, keyExtractor: (x:T)=>U&WithE
     });
 }
 
+export function plucker<T, K extends keyof T>(key: K) {
+    return (x: T) => x[key]
+}
+
+export function pluck<T,K extends keyof T>(seq: Seq<T>, key: K): Seq<T[K]> {
+    return Stream.of(...seq.toArray().map(plucker(key)))
+}
+
 /**
  * Utility function to help converting a value to string
  * util.inspect seems to depend on node.

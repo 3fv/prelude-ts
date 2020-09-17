@@ -87,7 +87,11 @@ export class Vector<T extends ToString> implements Seq<T> {
     isEmpty(): boolean {
         return L.length(this._list) === 0;
     }
-
+    
+    pluck<K extends keyof T>(key:K): Seq<T[K]> {
+        return SeqHelpers.pluck(this,key) // Stream.of(...this.ma);
+    }
+    
     /**
      * Dual to the foldRight function. Build a collection from a seed.
      * Takes a starting element and a function.
@@ -148,7 +152,7 @@ export class Vector<T extends ToString> implements Seq<T> {
      *
      *     Vector.of(1, 2, 3, 4, 2).replaceFirst(2, 5)
      *     => Vector.of(1, 5, 3, 4, 2)
-     * 
+     *
      */
     replaceFirst(element: T&WithEquality, newVal: T&WithEquality): Vector<T> {
         // it's a little annoying that areEqual will check whether the element

@@ -1,7 +1,4 @@
 import { LinkedList, ConsLinkedList } from "../src/LinkedList";
-import { HashMap } from "../src/HashMap";
-import { Option } from "../src/Option";
-import { Stream } from "../src/Stream";
 import { MyClass } from "./SampleData";
 import * as SeqTest from "./Seq";
 import * as assert from 'assert'

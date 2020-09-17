@@ -342,4 +342,14 @@ export interface Seq<T extends ToString> extends Collection<T> {
      * Enables fluent-style programming by chaining calls.
      */
     transform<U>(converter:(x:Seq<T>)=>U): U;
+    
+    /**
+     * Pluck a property from each item in
+     * the sequence
+     *
+     *     Vector.of({a:1},{a:2}).pluck("a")
+     *     => Vector.of(1,2)
+     *
+     */
+    pluck<K extends keyof T>(key: K): Seq<T[K]>
 }

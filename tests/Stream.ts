@@ -1,10 +1,7 @@
 import { Stream } from "../src/Stream";
-import { Vector } from "../src/Vector";
-import { Option } from "../src/Option";
 import { MyClass} from "./SampleData";
-import { HashMap} from "../src/HashMap";
 import * as SeqTest from "./Seq";
-import * as assert from 'assert'
+import * as assert from 'assert';
 
 SeqTest.runTests("Stream",
                  Stream.ofIterable,
