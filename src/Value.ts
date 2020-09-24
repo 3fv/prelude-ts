@@ -1,13 +1,13 @@
 import { WithEquality } from "./Comparison";
 
-import * as util from 'util';
+//import * as util from 'util';
 import { ToString } from "./ToString"
 
 /**
  * @hidden
  */
 // @ts-ignore -- see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30241
-export const inspect: unique symbol = util.inspect.custom;
+export const inspect: unique symbol = typeof "window" !== "undefined" ? Symbol("inspect") : require("util").inspect.custom;
 
 export interface Value extends ToString {
 
