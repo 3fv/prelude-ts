@@ -1,67 +1,69 @@
 {
-    "name": "@3fv/prelude-ts",
-    "version": "0.8.19",
-    "description": "A typescript functional programming library",
-    "main": "dist/src/index.js",
-    "typings": "dist/src/index.d.ts",
-    "publishConfig": {
-        "access": "public"
-    },
-    "repository": {
-        "type": "git",
-        "url": "ssh://git@github.com/3fv/prelude-ts.git"
-    },
-    "dependencies": {
-        "hamt_plus": "1.0.2",
-        "list": "2.0.19"
-    },
-    "devDependencies": {
-        "@types/mocha": "5.2.7",
-        "@types/node": "12.7.3",
-        "@types/request-promise-native": "1.0.17",
-        "benchmark": "2.1.4",
-        "browserify": "16.5.0",
-        "hamt": "2.2.2",
-        "immutable": "4.0.0-rc.12",
-        "mocha": "6.2.0",
-        "mocha-testcheck": "1.0.0-rc.0",
-        "prettier": "^2.1.1",
-        "request": "2.88.0",
-        "request-promise-native": "1.0.9",
-        "typedoc": "0.7.2",
-        "typescript": "4.0.2",
-        "uglify-js": "3.6.0"
-    },
-    "keywords": [
-        "typescript",
-        "functional-programming",
-        "immutable",
-        "collections"
-    ],
-    "author": "Emmanuel Touzery",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/emmanueltouzery/prelude.ts/issues"
-    },
-    "homepage": "https://github.com/emmanueltouzery/prelude.ts#readme",
-    "scripts": {
-        "build": "tsc -b tsconfig.json",
-        "build:watch": "yarn run build -- -w",
-        "prepublish": "yarn test:clean && scripts/prepublish.sh",
-        "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
-        "test:clean": "rm -f tests/apidoc-*",
-        "retest": "yarn clean; yarn test",
-        "test": "yarn test:generate && yarn build && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
-        "release": "yarn publish --patch --non-interactive",
-        "clean": "yarn test:clean; rm -Rf ./dist",
-        "docgen": "./scripts/make_doc.sh",
-        "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
-    },
-    "files": [
-        "dist",
-        "src",
-        "LICENSE.TXT",
-        "README.md",
-        "package.json"
-    ]
+  "name": "@3fv/prelude-ts",
+  "version": "0.8.19",
+  "description": "A typescript functional programming library",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/3fv/prelude-ts.git"
+  },
+  "dependencies": {
+    "hamt_plus": "1.0.2",
+    "list": "2.0.19"
+  },
+  "devDependencies": {
+    "@types/mocha": "5.2.7",
+    "@types/node": "12.7.3",
+    "@types/request-promise-native": "1.0.17",
+    "benchmark": "2.1.4",
+    "browserify": "16.5.0",
+    "hamt": "2.2.2",
+    "immutable": "4.0.0-rc.12",
+    "mocha": "6.2.0",
+    "npm-run-all": "^4.1.5",
+    "mocha-testcheck": "1.0.0-rc.0",
+    "prettier": "^2.1.1",
+    "request": "2.88.0",
+    "request-promise-native": "1.0.9",
+    "typedoc": "0.7.2",
+    "typescript": "4.0.2",
+    "uglify-js": "3.6.0"
+  },
+  "keywords": [
+    "typescript",
+    "functional-programming",
+    "immutable",
+    "collections"
+  ],
+  "author": "Emmanuel Touzery",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emmanueltouzery/prelude.ts/issues"
+  },
+  "homepage": "https://github.com/emmanueltouzery/prelude.ts#readme",
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "build:watch": "yarn run build -- -w",
+    "preversion": "run-s clean build",
+    "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
+    "test:clean": "rm -f tests/apidoc-*",
+    "retest": "yarn clean; yarn test",
+    "test": "yarn test:generate && yarn build && ./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
+    "release": "yarn publish --non-interactive",
+    "release:patch": "yarn release -- --patch ",
+    "clean": "yarn test:clean; rm -Rf ./dist",
+    "docgen": "./scripts/make_doc.sh",
+    "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE.TXT",
+    "README.md",
+    "package.json"
+  ]
 }

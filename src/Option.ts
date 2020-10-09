@@ -44,6 +44,7 @@ import { contractTrueEquality } from "./Contract";
  */
 export type Option<T> = Some<T> | None<T>;
 
+
 /**
  * Holds the "static methods" for [[Option]]
  */
@@ -1066,3 +1067,13 @@ export class None<T> implements Value {
  * @hidden
  */
 export const none = new None<any>();
+
+/**
+ * Simpler shortcut to `Option.ofNullable`
+ *
+ * @param {T} o
+ * @returns {Option<T>}
+ */
+export function asOption<T>(o?:T): Option<T> {
+    return Option.ofNullable(o)
+}
