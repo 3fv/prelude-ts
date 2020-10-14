@@ -555,6 +555,23 @@ export class Some<T> implements Value {
     }
     
     /**
+     * Return a new option where the element (if present) was transformed
+     * by the mapper function you give. If the option was None it'll stay None.
+     *
+     *     Option.of(5).mapIf(x => x <=4, x => x*2)
+     *     => Option.of(5)
+     *
+     *     Option.of(5).mapIf(x => x <=10, x => x*2)
+     *     => Option.of(10)
+     *
+     *
+     * Also see [[Some.mapNullable]], [[Some.flatMap]]
+     */
+    mapIf<U>(predicate: (v: T) => boolean, fn: (v: T) => U): Option<U | T> {
+        return !predicate(this.value) ? this : this.map(fn)
+    }
+    
+    /**
      * Execute a side-effecting function if the option
      * is a Some; returns the option.
      *     Option.of(5).tap(x => x*2)
@@ -898,7 +915,20 @@ export class None<T> implements Value {
     map<U>(fn: (v: T) => U): Option<U> {
         return <None<U>>none;
     }
-
+    
+    /**
+     * Return a new option where the element (if present) was transformed
+     * by the mapper function you give. If the option was None it'll stay None.
+     *
+     *
+     * @param fn
+     * @param predicate
+     * @return {this}
+     */
+    mapIf(predicate: (v: T) => boolean, fn: (v: T) => any): Option<T> {
+        return this;
+    }
+    
     /**
      * Return a new option where the element (if present) was transformed
      * by the mapper function you give. If the mapped value is `null` or
