@@ -95,12 +95,16 @@ export function distinctBy<T,U>(seq: Collection<T>, keyExtractor: (x:T)=>U&WithE
     });
 }
 
-export function plucker<T, K extends keyof T>(key: K) {
-    return (x: T) => x[key]
+export type PluckKeyValue<T, K extends keyof T> = (T extends Array<any> ? (K extends keyof T ? T[K] : never) : K extends keyof T ? T[K] : never)
+
+
+export function plucker<T extends {} | Array<any>,K extends keyof T, V extends PluckKeyValue<T, K>>(key: K): ((x:T) => V) {
+    return (x: T) => x[key] as V
 }
 
-export function pluck<T,K extends keyof T>(seq: Seq<T>, key: K): Seq<T[K]> {
-    return Stream.of(...seq.toArray().map(plucker(key)))
+export function pluck<T,K extends keyof T, V extends PluckKeyValue<T, K>
+  >(seq: Seq<T>, key: K): Seq<V> {
+    return Stream.of(...seq.toArray().map(plucker<T,K,V>(key)))
 }
 
 /**

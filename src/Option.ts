@@ -558,10 +558,10 @@ export class Some<T> implements Value {
      * Return a new option where the element (if present) was transformed
      * by the mapper function you give. If the option was None it'll stay None.
      *
-     *     Option.of(5).mapIf(x => x <=4, x => x*2)
+     *     Option.of(5).mapIf(x => x <=4, (x:number) => x*2)
      *     => Option.of(5)
      *
-     *     Option.of(5).mapIf(x => x <=10, x => x*2)
+     *     Option.of(5).mapIf(x => x <=10, (x:number) => x*2)
      *     => Option.of(10)
      *
      *

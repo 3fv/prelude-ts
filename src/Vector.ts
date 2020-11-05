@@ -88,6 +88,13 @@ export class Vector<T extends ToString> implements Seq<T> {
         return L.length(this._list) === 0;
     }
     
+    /**
+     * Pluck value from object / array
+     *
+     *     Vector.of([1,2,3],[2, 3, 4, 2]).pluck(2)
+     *     => Vector.of(2,3)
+     *
+     */
     pluck<K extends keyof T>(key:K): Seq<T[K]> {
         return SeqHelpers.pluck(this,key) // Stream.of(...this.ma);
     }
