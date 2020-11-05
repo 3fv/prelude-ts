@@ -104,9 +104,12 @@ export function getHashCode(obj: any|null): number {
     if (!obj) {
         return 0;
     }
-    if (hasEquals(obj)) {
+    
+    // NOTE: this is a check JUST in case the string proto was changed
+    if (typeof obj !== "string" && hasEquals(obj)) {
         return obj.hashCode();
     }
+    
     if (typeof obj === 'number') {
         // this is the hashcode implementation for numbers from immutablejs
         if (obj !== obj || obj === Infinity) {
