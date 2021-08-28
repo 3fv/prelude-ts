@@ -1,4 +1,5 @@
 dist/
+lib/
 node_modules/
 apidoc/
 npm-debug.log
@@ -10,3 +11,6 @@ tests/apidoc-*
 package-lock.json
 yarn.lock
 /yarn-error.log
+/.idea/aws.xml
+/.idea/misc.xml
+/.idea/redis-manager-config.xml
