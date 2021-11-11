@@ -9,6 +9,7 @@ import { WithEquality, areEqual, getHashCode,
 import * as SeqHelpers from "./SeqHelpers";
 import * as L from "list";
 import { ToString } from "./ToString"
+import { Bind } from "./decorators"
 
 /**
  * A general-purpose list class with all-around good performance.
@@ -77,6 +78,7 @@ export class Vector<T extends ToString> implements Seq<T> {
     /**
      * Get the length of the collection.
      */
+    @Bind()
     length(): number {
         return L.length(this._list);
     }

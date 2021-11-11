@@ -302,8 +302,8 @@ export class EitherStatic {
      *     throws();
      *     => Either.left("x")
      */
-    lift<T extends any[],L,U>(fn: (...args: T)=>U, witness?: L): (...args:T)=>Either<L,U> {
-        return (...args:T) => {
+    lift<T extends any[],L,U>(fn: (...args: T)=>U, witness?: L): ((...args:T)=>Either<L,U>) {
+        return ((...args:T) => {
             try {
                 const r = fn(...args);
                 if (r !== undefined) {
@@ -313,7 +313,7 @@ export class EitherStatic {
                 return Either.left(err);
             }
             throw new Error("liftEither got undefined!");
-        };
+        }) as ((...args:T)=>Either<L,U>)
     }
 
     /**

@@ -19,7 +19,7 @@ let preludeTsContractViolationCb = (msg:string):never => { throw msg; };
  *  HashSet.of(Option.of([1]))
  *  => throws
  */
-export function setContractViolationAction(action: (msg:string)=>void) {
+export function setContractViolationAction(action: (msg:string)=>never) {
     preludeTsContractViolationCb = action;
 }
 
