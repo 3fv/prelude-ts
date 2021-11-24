@@ -32,7 +32,7 @@ export type FutureDisposer<T extends ToString> = (
   err?: Error,
   value?: T,
   future?: Future<T>
-) => Promise<T> | T
+) => Promise<T | void> | T | void
 
 /**
  * A Future is the equivalent, and ultimately wraps, a javascript Promise.
