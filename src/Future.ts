@@ -45,7 +45,16 @@ export type FutureDisposer<T extends ToString> = (
  * `await` will return instantly.
  */
 export class Future<T extends ToString> {
+  /**
+   * A Disposal tool for resource cleanup, by default, uses finally mode
+   *
+   * @param dispose function for cleaning up resources (could be cleaner)
+   * @param mode
+   * @returns
+   */
   disposer(dispose: FutureDisposer<T>, mode: FutureDisposerMode = "finally") {
+    const { promise } = this
+
     let invoked = false
 
     // CREATE WRAPPED HANDLER
@@ -89,14 +98,17 @@ export class Future<T extends ToString> {
       }
     }
 
+    let nextPromise: Promise<T[]>
     if (mode === "finally") {
-      this.promise.finally(wrappedFn("finally"))
+      nextPromise = promise.finally(wrappedFn("finally"))
     } else {
-      this.promise.catch(wrappedFn("then"))
-      this.promise.catch(wrappedFn("catch"))
+      nextPromise = promise.then(
+        wrappedFn("then") as any,
+        wrappedFn("catch")
+      ) as Promise<T[]>
     }
 
-    return this
+    return new Future<T>(nextPromise)
   }
 
   // careful cause i can't have my type be F<F<T>>
