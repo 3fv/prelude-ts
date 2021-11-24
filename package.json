@@ -51,7 +51,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "build:watch": "yarn run build -- -w",
-    "preversion": "run-s clean build",
+    "preversion": "run-s build",
     "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
     "test:clean": "rm -f tests/apidoc-*",
     "test:run": "./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
