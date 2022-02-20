@@ -36,6 +36,7 @@ import {
 } from "./Comparison";
 import { toStringHelper } from "./SeqHelpers";
 import { contractTrueEquality } from "./Contract";
+import { isBoolean, isFunction } from "@3fv/guard"
 
 /**
  * An Option is either [[Some]] or [[None]]
@@ -592,16 +593,22 @@ export class Some<T> implements Value {
     /**
      * Execute a side-effecting function if the option
      * is a Some; returns the option.
-     *     Option.of({ a: 1 }).tap(o => {
+     *
+     *      Option.of({ a: 1 }).tapIf(false, o => {
+     *         o.a++
+     *      })
+     *      => Option.of({ a: 1 })
+     *
+     *     Option.of({ a: 1 }).tapIf(true, o => {
      *       o.a++
      *     })
      *     => Option.of({ a: 2 })
      *
      *     Option.of({ a: 1 }).tapIf(
-         *     o => o.a !== 1,
-         *     o => {
-         *       o.a++
-         *     }
+     *      o => o.a !== 1,
+     *      o => {
+     *          o.a++
+     *      }
      *     )
      *     => Option.of({ a: 1 })
      *
@@ -609,8 +616,9 @@ export class Some<T> implements Value {
      * @param predicate
      * @return {this}
      */
-    tapIf(predicate: (v: T) => boolean, fn: (v: T) => any): Option<T> {
-        return !predicate(this.value) ? this : this.tap(fn)
+    tapIf(predicate: boolean | ((v: T) => boolean), fn: (v: T) => any): Option<T> {
+        const isTrue = isBoolean(predicate) ? predicate === true : isFunction(predicate) ? predicate(this.value) : false
+        return isTrue ? this : this.tap(fn)
     }
 
     /**
@@ -992,7 +1000,7 @@ export class None<T> implements Value {
      * @return {this}
      */
     tap(fn: (v: T) => any): Option<T> {
-        return this.ifSome(fn);
+        return this;
     }
     
     /**
@@ -1004,7 +1012,7 @@ export class None<T> implements Value {
      * @param predicate
      * @return {this}
      */
-    tapIf(predicate: (v: T) => boolean, fn: (v: T) => any): Option<T> {
+    tapIf(predicate: boolean | ((v: T) => boolean), fn: (v: T) => any): Option<T> {
         return this;
     }
     
