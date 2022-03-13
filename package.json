@@ -1,6 +1,6 @@
 {
   "name": "@3fv/prelude-ts",
-  "version": "0.8.28",
+  "version": "0.8.29",
   "description": "A typescript functional programming library",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -51,18 +51,21 @@
   "scripts": {
     "build": "tsc -b tsconfig.json",
     "build:watch": "yarn run build -w",
-    "preversion": "run-s build",
     "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
     "test:clean": "rm -f tests/apidoc-*",
     "test:run": "./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
     "test:run:watch": "./node_modules/mocha/bin/mocha -w --throw-deprecation --timeout 60000 ./dist/tests/*.js",
     "test": "run-s test:generate build test:run",
     "test:watch": "run-s test:generate build test:run:watch",
-    "release": "yarn publish --non-interactive",
-    "release:patch": "yarn release -- --patch ",
+    "//release": "yarn publish --non-interactive",
+    "//release:patch": "yarn release -- --patch ",
+    "//preversion": "yarn build && yarn test",
     "clean": "yarn test:clean; rm -Rf ./dist",
     "docgen": "./scripts/make_doc.sh",
-    "benchmarks": "tsc && node ./dist/benchmarks/bench.js"
+    "benchmarks": "tsc && node ./dist/benchmarks/bench.js",
+    "preversion": "yarn build",
+    "postversion": "./scripts/release.sh latest",
+    "release": "yarn version --patch --non-interactive"
   },
   "files": [
     "dist",
