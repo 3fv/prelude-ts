@@ -68,7 +68,7 @@
     "release": "yarn version --patch --non-interactive"
   },
   "files": [
-    "dist",
+    "dist/src",
     "src",
     "LICENSE.TXT",
     "README.md",

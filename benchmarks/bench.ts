@@ -1,3 +1,5 @@
+// noinspection ES6PreferShortImport,SpellCheckingInspection
+
 const Benchmark: any = require('benchmark');
 
 import { execSync } from "child_process";
@@ -47,7 +49,7 @@ function getPrerequisites(length:number): Prerequisites {
     const funkiaList = Funkia.from(array);
 
     const idxThreeQuarters = array.length*3/4;
-    const atThreeQuarters = array[idxThreeQuarters];
+    // const atThreeQuarters = array[idxThreeQuarters];
 
     const hashset = HashSet.ofIterable(array);
     const immSet = imm.Set(array);
@@ -182,10 +184,10 @@ compare(['Vector.get(i)', (p:Prerequisites) => p.vec.get(p.length/2)],
         ['immList.get(i)', (p:Prerequisites) => p.immList.get(p.length/2)],
         ['funkiaList.get(i)', (p:Prerequisites) => Funkia.nth(p.length/2, p.funkiaList)]);
 
-compare(['Vector.flatMap', (p:Prerequisites) => p.vec.flatMap(x => Vector.of(1,2))],
-        ['LinkedList.flatMap', (p:Prerequisites) => p.list.flatMap(x =>LinkedList.of(1,2))],
-        ['immList.flatMap', (p:Prerequisites) => p.immList.flatMap((x:number) => imm.List([1,2]))],
-        ['funkiaList.chain', (p:Prerequisites) => Funkia.chain(x => Funkia.list(1,2), p.funkiaList)]);
+compare(['Vector.flatMap', (p:Prerequisites) => p.vec.flatMap(_x => Vector.of(1,2))],
+        ['LinkedList.flatMap', (p:Prerequisites) => p.list.flatMap(_x =>LinkedList.of(1,2))],
+        ['immList.flatMap', (p:Prerequisites) => p.immList.flatMap((_x:number) => imm.List([1,2]))],
+        ['funkiaList.chain', (p:Prerequisites) => Funkia.chain(_x => Funkia.list(1,2), p.funkiaList)]);
         
 compare(['Vector.reverse', (p:Prerequisites) => p.vec.reverse()],
         ['Array.reverse', (p:Prerequisites) => p.array.reverse()],
@@ -322,5 +324,5 @@ compare(['HashMap.ofIterable (from vector)', (p:Prerequisites) =>
 compare(['HashMap.get', (p:Prerequisites) => p.hashmap.get(p.array[Math.floor(Math.random()*p.array.length)]+"")],
         ['immMap.get', (p:Prerequisites) => p.immMap.get(p.array[Math.floor(Math.random()*p.array.length)]+"")]);
 
-compare(['HashMap.filter', (p:Prerequisites) => p.hashmap.filter((k,v) => parseInt(k)<p.length/2)],
+compare(['HashMap.filter', (p:Prerequisites) => p.hashmap.filter((k,_v) => parseInt(k)<p.length/2)],
         ['immMap.filter', (p:Prerequisites) => p.immMap.filter((v:number,k:string) => parseInt(k)<p.length/2)]);

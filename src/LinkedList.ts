@@ -20,17 +20,18 @@
  *     LinkedList.of(1,2,3);
  *     LinkedList.of(1,2,3).map(x => x*2).last();
  */
-import { Option, Some, None } from "./Option";
-import { Vector } from "./Vector";
-import { WithEquality, getHashCode,
-         areEqual, Ordering, ToOrderable } from "./Comparison";
-import { contractTrueEquality } from "./Contract";
-import { inspect } from "./Value";
-import { HashMap } from "./HashMap";
-import { HashSet } from "./HashSet";
-import { Seq, IterableArray } from "./Seq";
-import { Stream } from "./Stream";
-import * as SeqHelpers from "./SeqHelpers";
+import { None, Option, Some } from "./Option"
+import { Vector } from "./Vector"
+import {
+    areEqual, getHashCode, Ordering, ToOrderable, WithEquality
+} from "./Comparison"
+import { contractTrueEquality } from "./Contract"
+import { inspect } from "./Value"
+import { HashMap } from "./HashMap"
+import { HashSet } from "./HashSet"
+import { IterableArray, Seq } from "./Seq"
+import { Stream } from "./Stream"
+import * as SeqHelpers from "./SeqHelpers"
 import { ToString } from "./ToString"
 
 /**
@@ -71,7 +72,8 @@ export class LinkedListStatic {
 
     /**
      * Curried type guard for LinkedList.
-     * Sometimes needed also due to https://github.com/Microsoft/TypeScript/issues/20218
+     * Sometimes needed also due to
+     * https://github.com/Microsoft/TypeScript/issues/20218
      *
      *     Vector.of(LinkedList.of(1), LinkedList.empty<number>())
      *         .filter(LinkedList.isEmpty)
@@ -83,7 +85,8 @@ export class LinkedListStatic {
 
     /**
      * Curried type guard for LinkedList.
-     * Sometimes needed also due to https://github.com/Microsoft/TypeScript/issues/20218
+     * Sometimes needed also due to
+     * https://github.com/Microsoft/TypeScript/issues/20218
      *
      *     Vector.of(Stream.of(1), Stream.empty<number>())
      *         .filter(Stream.isNotEmpty)
@@ -125,14 +128,15 @@ export class LinkedListStatic {
      * parameters to produce a new collection which combines all,
      * in tuples. For instance:
      *
-     *     LinkedList.zip(LinkedList.of(1,2,3), ["a","b","c"], Vector.of(8,9,10))
+     *     LinkedList.zip(LinkedList.of(1,2,3), ["a","b","c"],
+     * Vector.of(8,9,10))
      *     => LinkedList.of([1,"a",8], [2,"b",9], [3,"c",10])
      *
      * The result collection will have the length of the shorter
      * of the input iterables. Extra elements will be discarded.
      *
-     * Also see the non-static version [[ConsLinkedList.zip]], which only combines two
-     * collections.
+     * Also see the non-static version [[ConsLinkedList.zip]], which only
+     * combines two collections.
      * @param A A is the type of the tuple that'll be generated
      *          (`[number,string,number]` for the code sample)
      */
@@ -617,9 +621,12 @@ export class EmptyLinkedList<T extends ToString> implements Seq<T> {
      * sorted according to the comparator you give.
      *
      *     const activityOrder = ["Writer", "Actor", "Director"];
-     *     LinkedList.of({name:"George", activity: "Director"}, {name:"Robert", activity: "Actor"})
-     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) - activityOrder.indexOf(p2.activity));
-     *     => LinkedList.of({"name":"Robert","activity":"Actor"}, {"name":"George","activity":"Director"})
+     *     LinkedList.of({name:"George", activity: "Director"}, {name:"Robert",
+     * activity: "Actor"})
+     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) -
+     * activityOrder.indexOf(p2.activity));
+     *     => LinkedList.of({"name":"Robert","activity":"Actor"},
+     * {"name":"George","activity":"Director"})
      *
      * also see [[ConsLinkedList.sortOn]]
      */
@@ -690,7 +697,8 @@ export class EmptyLinkedList<T extends ToString> implements Seq<T> {
      * and return the element for which the result was the smallest.
      * Returns Option.none if the collection is empty.
      *
-     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula", age:6}).minOn(x=>x.age)
+     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).minOn(x=>x.age)
      *     => Option.of({name:"Paula", age:6})
      *
      * also see [[ConsLinkedList.minBy]]
@@ -714,7 +722,8 @@ export class EmptyLinkedList<T extends ToString> implements Seq<T> {
      * and return the element for which the result was the largest.
      * Returns Option.none if the collection is empty.
      *
-     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula", age:6}).maxOn(x=>x.age)
+     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).maxOn(x=>x.age)
      *     => Option.of({name:"Joe", age:12})
      *
      * also see [[ConsLinkedList.maxBy]]
@@ -740,7 +749,8 @@ export class EmptyLinkedList<T extends ToString> implements Seq<T> {
      * Returns a lazy stream so memory use is not prohibitive.
      *
      *     LinkedList.of(1,2,3,4,5,6,7,8).sliding(3)
-     *     => Stream.of(LinkedList.of(1,2,3), LinkedList.of(4,5,6), LinkedList.of(7,8))
+     *     => Stream.of(LinkedList.of(1,2,3), LinkedList.of(4,5,6),
+     * LinkedList.of(7,8))
      */
     sliding(count:number): Stream<ConsLinkedList<T>> {
         return <Stream<ConsLinkedList<T>>>SeqHelpers.sliding(this, count);
@@ -1485,9 +1495,12 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
      * sorted according to the comparator you give.
      *
      *     const activityOrder = ["Writer", "Actor", "Director"];
-     *     LinkedList.of({name:"George", activity: "Director"}, {name:"Robert", activity: "Actor"})
-     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) - activityOrder.indexOf(p2.activity));
-     *     => LinkedList.of({"name":"Robert","activity":"Actor"}, {"name":"George","activity":"Director"})
+     *     LinkedList.of({name:"George", activity: "Director"}, {name:"Robert",
+     * activity: "Actor"})
+     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) -
+     * activityOrder.indexOf(p2.activity));
+     *     => LinkedList.of({"name":"Robert","activity":"Actor"},
+     * {"name":"George","activity":"Director"})
      *
      * also see [[ConsLinkedList.sortOn]]
      */
@@ -1563,7 +1576,8 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
      * and return the element for which the result was the smallest.
      * Returns Option.none if the collection is empty.
      *
-     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula", age:6}).minOn(x=>x.age)
+     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).minOn(x=>x.age)
      *     => Option.of({name:"Paula", age:6})
      *
      * also see [[ConsLinkedList.minBy]]
@@ -1576,7 +1590,8 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
      * Compare values in the collection and return the largest element.
      * Returns Option.none if the collection is empty.
      *
-     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula", age:6}).maxOn(x=>x.age)
+     *     LinkedList.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).maxOn(x=>x.age)
      *     => Option.of({name:"Joe", age:12})
      *
      * also see [[ConsLinkedList.maxOn]]
@@ -1613,7 +1628,8 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
      * Returns a lazy stream so memory use is not prohibitive.
      *
      *     LinkedList.of(1,2,3,4,5,6,7,8).sliding(3)
-     *     => Stream.of(LinkedList.of(1,2,3), LinkedList.of(4,5,6), LinkedList.of(7,8))
+     *     => Stream.of(LinkedList.of(1,2,3), LinkedList.of(4,5,6),
+     * LinkedList.of(7,8))
      */
     sliding(count:number): Stream<ConsLinkedList<T>> {
         return <Stream<ConsLinkedList<T>>>SeqHelpers.sliding(this, count);
@@ -1831,3 +1847,6 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
 }
 
 const emptyLinkedList = new EmptyLinkedList<any>();
+
+export const linkedListOf = LinkedList.of
+export const linkedListOfIterable = LinkedList.ofIterable

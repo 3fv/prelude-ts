@@ -1,6 +1,5 @@
 import { WithEquality } from "./Comparison";
 
-//import * as util from 'util';
 import { ToString } from "./ToString"
 
 /**
@@ -33,3 +32,5 @@ export interface Value extends ToString {
      */
     [inspect](): string;
 }
+
+

@@ -1001,3 +1001,8 @@ export class Vector<T extends ToString> implements Seq<T> {
         return Vector.ofIterable(r);
     }
 }
+
+
+export const vectorOf = Vector.of
+
+export const vectorOfIterable = Vector.ofIterable

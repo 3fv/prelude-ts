@@ -814,3 +814,6 @@ class EmptyHashSet<T> extends HashSet<T> {
 }
 
 const emptyHashSet = new EmptyHashSet<any>();
+
+export const hashSetOf = HashSet.of
+export const hashSetOfIterable = HashSet.ofIterable

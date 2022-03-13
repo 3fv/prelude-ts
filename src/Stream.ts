@@ -1867,3 +1867,13 @@ export class ConsStream<T> implements Seq<T> {
 }
 
 const emptyStream = new EmptyStream<any>();
+
+/**
+ * @see Stream.of
+ */
+export const streamOf = Stream.of
+
+/**
+ * @see Stream.ofIterable
+ */
+export const streamOfIterable = Stream.ofIterable

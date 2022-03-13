@@ -12,13 +12,7 @@ NPM_VERSION=$(cat package.json | jq .version)
 git push --tags
 echo Publishing
 
-./scripts/prepare.sh
-cp README.md lib/
-
-pushd lib
 yarn publish . --from-package --non-interactive --tag ${NPM_TAG}
-popd
+
 git push
-
-
 echo "Successfully released version ${NPM_VERSION} with tag ${NPM_TAG}!"
