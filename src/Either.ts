@@ -519,7 +519,16 @@ export class Left<L,R> implements Value {
     getOrElse(other: R): R {
         return other;
     }
-
+    
+    /**
+     * If this is a right, return its value, else call `fn`
+     *
+     * @param fn
+     */
+    getOrCall(fn: () => R): R {
+        return fn()
+    }
+    
     /**
      * Get the value contained in this left.
      * NOTE: we know it's there, since this method
@@ -545,6 +554,15 @@ export class Left<L,R> implements Value {
      */
     getLeftOrElse(other: L): L {
         return this.value;
+    }
+    
+    /**
+     * If this is a left, return its value, else call `fn`
+     *
+     * @param fn
+     */
+    getLeftOrCall(fn: () => L): L {
+        return this.value
     }
 
     /**
@@ -794,6 +812,15 @@ export class Right<L,R> implements Value {
     getOrElse(other: R): R {
         return this.value;
     }
+    
+    /**
+     * If this is a right, return its value, else call `fn`
+     *
+     * @param fn
+     */
+    getOrCall(fn: () => R): R {
+        return this.value
+    }
 
     /**
      * If this either is a left, return its value, else throw
@@ -812,6 +839,16 @@ export class Right<L,R> implements Value {
     getLeftOrElse(other: L): L {
         return other;
     }
+    
+    /**
+     * If this is a left, return its value, else call `fn`
+     *
+     * @param fn
+     */
+    getLeftOrCall(fn: () => L): L {
+        return fn()
+    }
+    
 
     /**
      * Convert this either to an option, conceptually dropping
