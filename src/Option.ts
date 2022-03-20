@@ -34,9 +34,9 @@ import {
     WithEquality, areEqual, hasTrueEquality,
     getHashCode,
 } from "./Comparison";
-import { toStringHelper } from "./SeqHelpers";
 import { contractTrueEquality } from "./Contract";
 import { isBoolean, isFunction } from "@3fv/guard"
+import { toStringHelper } from "./toStringHelper"
 
 /**
  * An Option is either [[Some]] or [[None]]

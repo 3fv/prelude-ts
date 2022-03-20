@@ -1,15 +1,25 @@
-import { ISet,
-         SortOnSpec, SortBySpec, isSortOnSpec } from "./ISet";
-import { Vector } from "./Vector";
-import { HashMap } from "./HashMap";
-import { LinkedList } from "./LinkedList";
-import { Option } from "./Option";
-import { WithEquality, hasEquals, HasEquals,
-         getHashCode, areEqual, Ordering, ToOrderable  } from "./Comparison";
-import * as SeqHelpers from "./SeqHelpers";
-import { contractTrueEquality } from "./Contract";
-import { inspect } from "./Value";
+// noinspection DuplicatedCode
+
+import { ISet, isSortOnSpec, SortBySpec, SortOnSpec } from "./ISet"
+import { Vector } from "./Vector"
+import { HashMap } from "./HashMap"
+import { LinkedList } from "./LinkedList"
+import { Option } from "./Option"
+import {
+  areEqual,
+  getHashCode,
+  hasEquals,
+  HasEquals,
+  Ordering,
+  ToOrderable,
+  WithEquality
+} from "./Comparison"
+import * as SeqHelpers from "./SeqHelpers"
+import { contractTrueEquality } from "./Contract"
+import { inspect } from "./Value"
 import { ToString } from "./ToString"
+import { toStringHelper } from "./toStringHelper"
+
 const hamt: any = require("hamt_plus");
 
 /**
@@ -22,7 +32,7 @@ export class HashSet<T extends ToString> implements ISet<T> {
     /**
      * @hidden
      */
-    protected constructor(private hamt: any) {}
+    protected constructor(protected hamt: any) {}
 
     /**
      * The empty hashset.
@@ -85,7 +95,7 @@ export class HashSet<T extends ToString> implements ISet<T> {
         return new HashSet<T>(this.hamt.set(elt,elt));
     }
 
-    private addAllArray(elts: Array<T&WithEquality>): HashSet<T> {
+    protected addAllArray(elts: Array<T&WithEquality>): HashSet<T> {
         return new HashSet<T>(this.hamt.mutate((h:any) => {
             if (elts.length > 0) {
                 contractTrueEquality("Error building a HashSet", elts[0]);
@@ -246,7 +256,8 @@ export class HashSet<T extends ToString> implements ISet<T> {
      *
      * Example:
      *
-     *     HashSet.of("a", "bb", "ccc").foldLeft(0, (soFar,item) => soFar+item.length);
+     *     HashSet.of("a", "bb", "ccc").foldLeft(0, (soFar,item) =>
+     * soFar+item.length);
      *     => 6
      *
      * @param zero The initial value
@@ -267,7 +278,8 @@ export class HashSet<T extends ToString> implements ISet<T> {
      *
      * Example:
      *
-     *     HashSet.of("a", "bb", "ccc").foldRight(0, (item,soFar) => soFar+item.length);
+     *     HashSet.of("a", "bb", "ccc").foldRight(0, (item,soFar) =>
+     * soFar+item.length);
      *     => 6
      *
      * @param zero The initial value
@@ -644,7 +656,7 @@ export class HashSet<T extends ToString> implements ISet<T> {
         return "HashSet(" +
             this.hamt.fold(
                 (acc: string[], value: T, key: T) =>
-                    {acc.push(SeqHelpers.toStringHelper(key)); return acc;}, []).join(", ")
+                    {acc.push(toStringHelper(key)); return acc;}, []).join(", ")
             + ")";
     }
 
@@ -664,7 +676,106 @@ export class HashSet<T extends ToString> implements ISet<T> {
     mkString(separator: string): string {
         return this.hamt.fold(
             (acc: string[], value: T, key: T) =>
-                {acc.push(SeqHelpers.toStringHelper(key, {quoteStrings: false})); return acc;}, []).join(separator);
+                {acc.push(toStringHelper(key, {quoteStrings: false})); return acc;}, []).join(separator);
+    }
+}
+
+export class MutableHashSet<T> extends HashSet<T> {
+    
+    protected constructor(h: any = hamt.make()) {
+        super(h)
+    }
+    
+    
+    /**
+     * The empty hashset.
+     * @param T the item type
+     */
+    static new<T>(): HashSet<T> {
+        return new MutableHashSet<T>();
+    }
+    
+    /**
+     * Build a hashset from any iterable, which means also
+     * an array for instance.
+     * @param T the item type
+     */
+    static ofIterable<T>(elts: Iterable<T & WithEquality>): HashSet<T> {
+        return new MutableHashSet<T>().addAll(elts);
+    }
+    
+    /**
+     * Build a hashset from a series of items (any number, as parameters)
+     * @param T the item type
+     */
+    static of<T>(...arr: Array<T & WithEquality>): HashSet<T> {
+        return MutableHashSet.ofIterable(arr);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    protected addAllArray(elts: Array<T&WithEquality>): HashSet<T> {
+        this.hamt = this.hamt.mutate((h:any) => {
+            if (elts.length > 0) {
+                contractTrueEquality("Error building a HashSet", elts[0]);
+            }
+            for (const val of elts) {
+                h.set(val, val);
+            }
+        })
+        return this;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    add(elt:T & WithEquality):HashSet<T> {
+        this.hamt = this.hamt.set(elt,elt)
+        return this
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    addAll(elts:Iterable<T & WithEquality>):HashSet<T> {
+        if (Array.isArray(elts)) {
+            return this.addAllArray(elts);
+        }
+        
+        this.hamt = this.hamt.mutate((h:any) => {
+            let checkedEq = false;
+            const iterator = elts[Symbol.iterator]();
+            let curItem = iterator.next();
+            if (!curItem.done && curItem.value && !checkedEq) {
+                contractTrueEquality("Error building a HashSet", curItem.value);
+                checkedEq = true;
+            }
+            while (!curItem.done) {
+                h.set(curItem.value, curItem.value);
+                curItem = iterator.next();
+            }
+        })
+        return this;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    remove(elt: T&WithEquality): HashSet<T> {
+        this.hamt = this.hamt.remove(elt)
+        return this;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    removeAll(elts: Iterable<T&WithEquality>): HashSet<T> {
+        this.hamt = this.hamt.fold(
+          (acc: any, v: T&WithEquality, k: T&WithEquality) =>
+            HashSet.ofIterable<T&WithEquality>(elts).contains(k) ? acc : acc.set(k,k), hamt.empty)
+        
+        return this;
     }
 }
 

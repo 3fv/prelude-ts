@@ -23,7 +23,7 @@
 import { None, Option, Some } from "./Option"
 import { Vector } from "./Vector"
 import {
-    areEqual, getHashCode, Ordering, ToOrderable, WithEquality
+  areEqual, getHashCode, Ordering, ToOrderable, WithEquality
 } from "./Comparison"
 import { contractTrueEquality } from "./Contract"
 import { inspect } from "./Value"
@@ -33,6 +33,7 @@ import { IterableArray, Seq } from "./Seq"
 import { Stream } from "./Stream"
 import * as SeqHelpers from "./SeqHelpers"
 import { ToString } from "./ToString"
+import { toStringHelper } from "./toStringHelper"
 
 /**
  * Holds the "static methods" for [[LinkedList]]
@@ -137,8 +138,13 @@ export class LinkedListStatic {
      *
      * Also see the non-static version [[ConsLinkedList.zip]], which only
      * combines two collections.
-     * @param A A is the type of the tuple that'll be generated
+     *
      *          (`[number,string,number]` for the code sample)
+     *
+     * @template A
+     
+     * @param {IterableArray<A>} iterables
+     * @return {LinkedList<A>}
      */
     zip<A extends any[]>(...iterables: IterableArray<A>): LinkedList<A> {
         let r = LinkedList.empty<A>();
@@ -1691,7 +1697,7 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
             if (isNotFirst) {
                 r += separator;
             }
-            r += SeqHelpers.toStringHelper(curItem.value, {quoteStrings:false});
+            r += toStringHelper(curItem.value, {quoteStrings:false});
             curItem = curItem._tail;
             isNotFirst = true;
         }
@@ -1834,7 +1840,7 @@ export class ConsLinkedList<T extends ToString> implements Seq<T> {
         let result = "LinkedList(";
 
         while (!curItem.isEmpty()) {
-            result += SeqHelpers.toStringHelper(curItem.value);
+            result += toStringHelper(curItem.value);
             const tail: LinkedList<T> = curItem._tail;
             curItem = tail;
             if (!curItem.isEmpty()) {

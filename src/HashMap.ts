@@ -7,7 +7,6 @@ import {
   WithEquality
 } from "./Comparison"
 import * as SeqHelpers from "./SeqHelpers"
-import { toStringHelper } from "./SeqHelpers"
 import { contractTrueEquality } from "./Contract"
 import { none, None, Option } from "./Option"
 import { HashSet } from "./HashSet"
@@ -15,6 +14,7 @@ import { Vector } from "./Vector"
 import { LinkedList } from "./LinkedList"
 import { inspect } from "./Value"
 import { ToString } from "./ToString"
+import { toStringHelper } from "./toStringHelper"
 
 const hamt: any = require("hamt_plus") as any
 

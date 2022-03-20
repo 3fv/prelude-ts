@@ -1,12 +1,11 @@
-import { Option } from "./Option";
-import { WithEquality, hasTrueEquality,
-         Ordering, ToOrderable } from "./Comparison";
-import { HashMap } from "./HashMap";
-import { Seq } from "./Seq";
-import { Collection } from "./Collection";
-import { Stream, ConsStream } from "./Stream";
-import { Lazy } from "./Lazy";
-import { HashSet } from "./HashSet";
+import { Option } from "./Option"
+import { Ordering, ToOrderable, WithEquality } from "./Comparison"
+import { HashMap } from "./HashMap"
+import { Seq } from "./Seq"
+import { Collection } from "./Collection"
+import { ConsStream, Stream } from "./Stream"
+import { Lazy } from "./Lazy"
+import { HashSet } from "./HashSet"
 
 /**
  * @hidden
@@ -105,45 +104,6 @@ export function plucker<T extends {} | Array<any>,K extends keyof T, V extends P
 export function pluck<T,K extends keyof T, V extends PluckKeyValue<T, K>
   >(seq: Seq<T>, key: K): Seq<V> {
     return Stream.of(...seq.toArray().map(plucker<T,K,V>(key)))
-}
-
-/**
- * Utility function to help converting a value to string
- * util.inspect seems to depend on node.
- * @hidden
- */
-export function toStringHelper(
-    obj: any|null,
-    options: {quoteStrings:boolean} = {quoteStrings: true}): string
-{
-    if (Array.isArray(obj)) {
-        return "[" + obj.map(o => toStringHelper(o, options)) + "]"
-    }
-    if (typeof obj === "string") {
-        return options.quoteStrings ? `'${obj}'` : obj;
-    }
-    if (obj && (obj.toString !== Object.prototype.toString)) {
-        return obj.toString();
-    }
-    // We used to use JSON.stringify here, but that will
-    // throw an exception if there are cycles, which we
-    // absolutely don't want!
-    // https://stackoverflow.com/a/48254637/516188
-    const customStringify = function (v:any) {
-        const cache = new Set();
-        return JSON.stringify(v, function (key, value) {
-            if (typeof value === 'object' && value !== null) {
-                if (cache.has(value)) {
-                    // Circular reference found, discard key
-                    return;
-                }
-                // Store value in our set
-                cache.add(value);
-            }
-            return value;
-        });
-    };
-    return customStringify(obj);
 }
 
 /**

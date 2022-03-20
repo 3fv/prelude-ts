@@ -3,8 +3,8 @@ import { Option } from "./Option";
 import { Vector } from "./Vector";
 import { LinkedList, ConsLinkedList } from "./LinkedList";
 import { WithEquality, areEqual, getHashCode } from "./Comparison";
-import { toStringHelper } from "./SeqHelpers";
 import { contractTrueEquality } from "./Contract";
+import { toStringHelper } from "./toStringHelper"
 
 /**
  * Contains a pair of two values, which may or may not have the same type.

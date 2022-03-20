@@ -1,5 +1,5 @@
 import { inspect } from "./Value";
-import { toStringHelper } from "./SeqHelpers";
+import { toStringHelper } from "./toStringHelper"
 
 /**
  * Represent a lazily evaluated value. You give a function which

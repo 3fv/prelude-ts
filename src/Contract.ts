@@ -1,5 +1,5 @@
 import { hasTrueEquality } from "./Comparison";
-import { toStringHelper } from "./SeqHelpers";
+import { toStringHelper } from "./toStringHelper"
 
 let preludeTsContractViolationCb = (msg:string):never => { throw msg; };
 

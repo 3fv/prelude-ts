@@ -1,15 +1,17 @@
-import { inspect } from './Value';
-import { Option } from "./Option";
-import { HashMap } from "./HashMap";
-import { HashSet } from "./HashSet";
-import { Stream } from "./Stream";
-import { Seq, IterableArray } from "./Seq";
-import { WithEquality, areEqual, getHashCode,
-         Ordering, ToOrderable } from "./Comparison";
-import * as SeqHelpers from "./SeqHelpers";
-import * as L from "list";
+import { inspect } from "./Value"
+import { Option } from "./Option"
+import { HashMap } from "./HashMap"
+import { HashSet } from "./HashSet"
+import { Stream } from "./Stream"
+import { IterableArray, Seq } from "./Seq"
+import {
+  areEqual, getHashCode, Ordering, ToOrderable, WithEquality
+} from "./Comparison"
+import * as SeqHelpers from "./SeqHelpers"
+import * as L from "list"
 import { ToString } from "./ToString"
 import { Bind } from "./decorators"
+import { toStringHelper } from "./toStringHelper"
 
 /**
  * A general-purpose list class with all-around good performance.
@@ -488,7 +490,8 @@ export class Vector<T extends ToString> implements Seq<T> {
 
 
     /**
-     * Returns the index of the first occurence of the value you give, if present
+     * Returns the index of the first occurence of the value you give, if
+     * present
      *
      *     Vector.of(1, 2, 3, 4, 3).indexOf(3)
      *     => Option.of(2)
@@ -568,7 +571,7 @@ export class Vector<T extends ToString> implements Seq<T> {
             if (i>0) {
                 r += ", ";
             }
-            r += SeqHelpers.toStringHelper(L.nth(i, this._list));
+            r += toStringHelper(L.nth(i, this._list));
         }
         return r + ")";
     }
@@ -594,7 +597,7 @@ export class Vector<T extends ToString> implements Seq<T> {
             if (i>0) {
                 r += separator;
             }
-            r += SeqHelpers.toStringHelper(<T>L.nth(i, this._list), {quoteStrings:false});
+            r += toStringHelper(<T>L.nth(i, this._list), {quoteStrings:false});
         }
         return r;
     }
@@ -912,7 +915,8 @@ export class Vector<T extends ToString> implements Seq<T> {
      * and return the element for which the result was the smallest.
      * Returns Option.none if the collection is empty.
      *
-     *     Vector.of({name:"Joe", age:12}, {name:"Paula", age:6}).minOn(x=>x.age)
+     *     Vector.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).minOn(x=>x.age)
      *     => Option.of({name:"Paula", age:6})
      *
      * also see [[Vector.minBy]]
@@ -936,7 +940,8 @@ export class Vector<T extends ToString> implements Seq<T> {
      * and return the element for which the result was the largest.
      * Returns Option.none if the collection is empty.
      *
-     *     Vector.of({name:"Joe", age:12}, {name:"Paula", age:6}).maxOn(x=>x.age)
+     *     Vector.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).maxOn(x=>x.age)
      *     => Option.of({name:"Joe", age:12})
      *
      * also see [[Vector.maxBy]]

@@ -18,19 +18,21 @@
  *     Stream.continually(Math.random).take(2);
  *     => Stream.of(0.49884723907769635, 0.3226548779864311)
  */
-import { Option, Some } from "./Option";
-import { Vector } from "./Vector";
-import { WithEquality, getHashCode,
-         areEqual, Ordering, ToOrderable } from "./Comparison";
-import { contractTrueEquality } from "./Contract";
-import { inspect } from "./Value";
-import { HashMap } from "./HashMap";
-import { HashSet } from "./HashSet";
-import { Seq, IterableArray } from "./Seq";
-import { Lazy } from "./Lazy";
-import { LinkedList } from "./LinkedList";
-import * as SeqHelpers from "./SeqHelpers";
+import { Option, Some } from "./Option"
+import { Vector } from "./Vector"
+import {
+  areEqual, getHashCode, Ordering, ToOrderable, WithEquality
+} from "./Comparison"
+import { contractTrueEquality } from "./Contract"
+import { inspect } from "./Value"
+import { HashMap } from "./HashMap"
+import { HashSet } from "./HashSet"
+import { IterableArray, Seq } from "./Seq"
+import { Lazy } from "./Lazy"
+import { LinkedList } from "./LinkedList"
+import * as SeqHelpers from "./SeqHelpers"
 import { ToString } from "./ToString"
+import { toStringHelper } from "./toStringHelper"
 
 /**
  * A Stream is either [[EmptyStream]] or [[ConsStream]]
@@ -79,7 +81,8 @@ export class StreamStatic {
 
     /**
      * Curried type guard for Stream.
-     * Sometimes needed also due to https://github.com/Microsoft/TypeScript/issues/20218
+     * Sometimes needed also due to
+     * https://github.com/Microsoft/TypeScript/issues/20218
      *
      *     Vector.of(Stream.of(1), Stream.empty<number>())
      *         .filter(Stream.isEmpty)
@@ -91,7 +94,8 @@ export class StreamStatic {
 
     /**
      * Curried type guard for Stream.
-     * Sometimes needed also due to https://github.com/Microsoft/TypeScript/issues/20218
+     * Sometimes needed also due to
+     * https://github.com/Microsoft/TypeScript/issues/20218
      *
      *     Vector.of(Stream.of(1), Stream.empty<number>())
      *         .filter(Stream.isNotEmpty)
@@ -171,8 +175,8 @@ export class StreamStatic {
      * The result collection will have the length of the shorter
      * of the input iterables. Extra elements will be discarded.
      *
-     * Also see the non-static version [[ConsStream.zip]], which only combines two
-     * collections.
+     * Also see the non-static version [[ConsStream.zip]], which only combines
+     * two collections.
      * @param A A is the type of the tuple that'll be generated
      *          (`[number,string,number]` for the code sample)
      */
@@ -682,9 +686,12 @@ export class EmptyStream<T extends ToString> implements Seq<T> {
      * sorted according to the comparator you give.
      *
      *     const activityOrder = ["Writer", "Actor", "Director"];
-     *     Stream.of({name:"George", activity: "Director"}, {name:"Robert", activity: "Actor"})
-     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) - activityOrder.indexOf(p2.activity));
-     *     => Stream.of({"name":"Robert","activity":"Actor"}, {"name":"George","activity":"Director"})
+     *     Stream.of({name:"George", activity: "Director"}, {name:"Robert",
+     * activity: "Actor"})
+     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) -
+     * activityOrder.indexOf(p2.activity));
+     *     => Stream.of({"name":"Robert","activity":"Actor"},
+     * {"name":"George","activity":"Director"})
      *
      * also see [[ConsStream.sortOn]]
      */
@@ -755,7 +762,8 @@ export class EmptyStream<T extends ToString> implements Seq<T> {
      * and return the element for which the result was the smallest.
      * Returns Option.none if the collection is empty.
      *
-     *     Stream.of({name:"Joe", age:12}, {name:"Paula", age:6}).minOn(x=>x.age)
+     *     Stream.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).minOn(x=>x.age)
      *     => Option.of({name:"Paula", age:6})
      *
      * also see [[ConsStream.minBy]]
@@ -779,7 +787,8 @@ export class EmptyStream<T extends ToString> implements Seq<T> {
      * and return the element for which the result was the largest.
      * Returns Option.none if the collection is empty.
      *
-     *     Stream.of({name:"Joe", age:12}, {name:"Paula", age:6}).maxOn(x=>x.age)
+     *     Stream.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).maxOn(x=>x.age)
      *     => Option.of({name:"Joe", age:12})
      *
      * also see [[ConsStream.maxBy]]
@@ -1522,9 +1531,12 @@ export class ConsStream<T> implements Seq<T> {
      * sorted according to the comparator you give.
      *
      *     const activityOrder = ["Writer", "Actor", "Director"];
-     *     Stream.of({name:"George", activity: "Director"}, {name:"Robert", activity: "Actor"})
-     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) - activityOrder.indexOf(p2.activity));
-     *     => Stream.of({"name":"Robert","activity":"Actor"}, {"name":"George","activity":"Director"})
+     *     Stream.of({name:"George", activity: "Director"}, {name:"Robert",
+     * activity: "Actor"})
+     *         .sortBy((p1,p2) => activityOrder.indexOf(p1.activity) -
+     * activityOrder.indexOf(p2.activity));
+     *     => Stream.of({"name":"Robert","activity":"Actor"},
+     * {"name":"George","activity":"Director"})
      *
      * also see [[ConsStream.sortOn]]
      */
@@ -1600,7 +1612,8 @@ export class ConsStream<T> implements Seq<T> {
      * and return the element for which the result was the smallest.
      * Returns Option.none if the collection is empty.
      *
-     *     Stream.of({name:"Joe", age:12}, {name:"Paula", age:6}).minOn(x=>x.age)
+     *     Stream.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).minOn(x=>x.age)
      *     => Option.of({name:"Paula", age:6})
      *
      * also see [[ConsStream.minBy]]
@@ -1624,7 +1637,8 @@ export class ConsStream<T> implements Seq<T> {
      * and return the element for which the result was the largest.
      * Returns Option.none if the collection is empty.
      *
-     *     Stream.of({name:"Joe", age:12}, {name:"Paula", age:6}).maxOn(x=>x.age)
+     *     Stream.of({name:"Joe", age:12}, {name:"Paula",
+     * age:6}).maxOn(x=>x.age)
      *     => Option.of({name:"Joe", age:12})
      *
      * also see [[ConsStream.maxBy]]
@@ -1700,7 +1714,7 @@ export class ConsStream<T> implements Seq<T> {
             if (isNotFirst) {
                 r += separator;
             }
-            r += SeqHelpers.toStringHelper(curItem.value, {quoteStrings:false});
+            r += toStringHelper(curItem.value, {quoteStrings:false});
             curItem = curItem._tail.get();
             isNotFirst = true;
         }
@@ -1850,7 +1864,7 @@ export class ConsStream<T> implements Seq<T> {
         let result = "Stream(";
 
         while (!curItem.isEmpty()) {
-            result += SeqHelpers.toStringHelper(curItem.value);
+            result += toStringHelper(curItem.value);
             const tail: Lazy<Stream<T>> = curItem._tail;
             if (!tail.isEvaluated()) {
                 result += ", ?";

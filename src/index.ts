@@ -18,6 +18,6 @@ export * from "./Contract";
 export * from "./Predicate";
 export * from "./Function";
 export * from "./Future";
-
-
 export * from "./const"
+
+export * from "./toStringHelper"
