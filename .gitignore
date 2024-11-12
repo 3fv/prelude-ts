@@ -14,3 +14,4 @@ yarn.lock
 /.idea/aws.xml
 /.idea/misc.xml
 /.idea/redis-manager-config.xml
+.DS_Store
