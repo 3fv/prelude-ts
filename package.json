@@ -57,15 +57,12 @@
     "test:run:watch": "./node_modules/mocha/bin/mocha -w --throw-deprecation --timeout 60000 ./dist/tests/*.js",
     "test": "run-s test:generate build test:run",
     "test:watch": "run-s test:generate build test:run:watch",
-    "//release": "yarn publish --non-interactive",
-    "//release:patch": "yarn release -- --patch ",
-    "//preversion": "yarn build && yarn test",
     "clean": "yarn test:clean; rm -Rf ./dist",
     "docgen": "./scripts/make_doc.sh",
     "benchmarks": "tsc && node ./dist/benchmarks/bench.js",
     "preversion": "yarn build",
-    "postversion": "./scripts/release.sh latest",
-    "release": "yarn version --patch --non-interactive"
+    "postversion": "node ./scripts/release.mjs latest",
+    "release": "yarn build  && yarn version --patch --non-interactive"
   },
   "files": [
     "dist/src",
