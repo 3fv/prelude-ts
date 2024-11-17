@@ -2,9 +2,20 @@
   "name": "@3fv/prelude-ts",
   "version": "0.8.33",
   "description": "A typescript functional programming library",
-  "main": "dist/cjs/index.js",
-  "module": "dist/mjs/index.js",
-  "typings": "dist/mjs/index.d.ts",
+  
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/mjs/index.js",
+  "types": "./dist/mjs/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/mjs/index.d.ts",
+      "node": "./dist/cjs/index.js",
+      "browser": "./dist/mjs/index.js",
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },

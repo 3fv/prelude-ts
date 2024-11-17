@@ -50,11 +50,31 @@ Sh.mkdir("-p", mjsDir, cjsDir)
 const cjsJson = `{
     "type": "commonjs",
     "main": "./index.js",
-    "module": "./index.js"
+    "module": "./index.js",
+    "exports": {
+      ".": {
+            "types": "./index.d.ts",
+            "node": "./index.js",
+            "browser": "./index.js",
+            "import": "./index.js",
+            "require": "./index.js",
+            "default": "./index.js"
+        }
+    }
 }`, mjsJson = `{
     "type": "module",
     "main": "./index.js",
-    "module": "./index.js"
+    "module": "./index.js",
+    "exports": {
+      ".": {
+            "types": "./index.d.ts",
+            "node": "./index.js",
+            "browser": "./index.js",
+            "import": "./index.js",
+            "require": "./index.js",
+            "default": "./index.js"
+        }
+    }
 }`
 
 // "exports": {
