@@ -1,10 +1,10 @@
-import { WithEquality } from "./Comparison";
-import { Option } from "./Option";
-import { Value } from "./Value"
-import { ISet } from "./ISet";
-import { Vector } from "./Vector";
-import { LinkedList } from "./LinkedList";
-import { Foldable } from "./Foldable";
+import { WithEquality } from "./Comparison.js"
+import { Option } from "./Option.js"
+import { Value } from "./Value.js"
+import { ISet } from "./ISet.js"
+import { Vector } from "./Vector.js"
+import { LinkedList } from "./LinkedList.js"
+import { Foldable } from "./Foldable.js"
 
 /**
  * A generic interface for a dictionary, mapping keys to values.

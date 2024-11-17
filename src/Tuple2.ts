@@ -1,10 +1,10 @@
-import { Value, inspect } from "./Value";
-import { Option } from "./Option";
-import { Vector } from "./Vector";
-import { LinkedList, ConsLinkedList } from "./LinkedList";
-import { WithEquality, areEqual, getHashCode } from "./Comparison";
-import { contractTrueEquality } from "./Contract";
-import { toStringHelper } from "./toStringHelper"
+import { Value, inspect } from "./Value.js"
+import { Option } from "./Option.js"
+import { Vector } from "./Vector.js"
+import { LinkedList, ConsLinkedList } from "./LinkedList.js"
+import { WithEquality, areEqual, getHashCode } from "./Comparison.js"
+import { contractTrueEquality } from "./Contract.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 /**
  * Contains a pair of two values, which may or may not have the same type.

@@ -1,5 +1,5 @@
-import { inspect } from "./Value";
-import { toStringHelper } from "./toStringHelper"
+import { inspect } from "./Value.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 /**
  * Represent a lazily evaluated value. You give a function which

@@ -1,8 +1,8 @@
-import { Vector } from "./Vector"
-import { Option } from "./Option"
-import { Either } from "./Either"
-import { HashMap } from "./HashMap"
-import { ToString } from "./ToString"
+import { Vector } from "./Vector.js"
+import { Option } from "./Option.js"
+import { Either } from "./Either.js"
+import { HashMap } from "./HashMap.js"
+import { ToString } from "./ToString.js"
 import { isPromise } from "@3fv/guard"
 
 /**

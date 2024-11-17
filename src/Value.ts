@@ -1,6 +1,6 @@
-import { WithEquality } from "./Comparison";
+import { WithEquality } from "./Comparison.js"
 
-import { ToString } from "./ToString"
+import { ToString } from "./ToString.js"
 
 /**
  * @hidden

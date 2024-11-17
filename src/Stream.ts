@@ -18,21 +18,21 @@
  *     Stream.continually(Math.random).take(2);
  *     => Stream.of(0.49884723907769635, 0.3226548779864311)
  */
-import { Option, Some } from "./Option"
-import { Vector } from "./Vector"
+import { Option, Some } from "./Option.js"
+import { Vector } from "./Vector.js"
 import {
   areEqual, getHashCode, Ordering, ToOrderable, WithEquality
-} from "./Comparison"
-import { contractTrueEquality } from "./Contract"
-import { inspect } from "./Value"
-import { HashMap } from "./HashMap"
-import { HashSet } from "./HashSet"
-import { IterableArray, Seq } from "./Seq"
-import { Lazy } from "./Lazy"
-import { LinkedList } from "./LinkedList"
-import * as SeqHelpers from "./SeqHelpers"
-import { ToString } from "./ToString"
-import { toStringHelper } from "./toStringHelper"
+} from "./Comparison.js"
+import { contractTrueEquality } from "./Contract.js"
+import { inspect } from "./Value.js"
+import { HashMap } from "./HashMap.js"
+import { HashSet } from "./HashSet.js"
+import { IterableArray, Seq } from "./Seq.js"
+import { Lazy } from "./Lazy.js"
+import { LinkedList } from "./LinkedList.js"
+import * as SeqHelpers from "./SeqHelpers.js"
+import { ToString } from "./ToString.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 /**
  * A Stream is either [[EmptyStream]] or [[ConsStream]]

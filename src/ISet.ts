@@ -1,10 +1,10 @@
-import { WithEquality, Ordering, ToOrderable } from "./Comparison";
-import { Value} from "./Value";
-import { Collection } from "./Collection";
-import { Vector } from "./Vector";
-import { LinkedList } from "./LinkedList";
-import { Option } from "./Option";
-import { ToString } from "./ToString"
+import { WithEquality, Ordering, ToOrderable } from "./Comparison.js"
+import { Value} from "./Value.js"
+import { Collection } from "./Collection.js"
+import { Vector } from "./Vector.js"
+import { LinkedList } from "./LinkedList.js"
+import { Option } from "./Option.js"
+import { ToString } from "./ToString.js"
 
 /**
  * Ability to specify a sorting function.

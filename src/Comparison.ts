@@ -1,4 +1,4 @@
-import { Option } from "./Option";
+import { Option } from "./Option.js"
 
 /**
  * Sorting function for type T: function

@@ -27,16 +27,16 @@
  * Some has the extra [[Some.get]] method that [[None]] doesn't have.
  */
 
-import { Value, inspect } from "./Value";
-import { Vector } from "./Vector";
-import { Either } from "./Either";
+import { Value, inspect } from "./Value.js"
+import { Vector } from "./Vector.js"
+import { Either } from "./Either.js"
 import {
     WithEquality, areEqual, hasTrueEquality,
     getHashCode,
-} from "./Comparison";
-import { contractTrueEquality } from "./Contract";
+} from "./Comparison.js";
+import { contractTrueEquality } from "./Contract.js"
 import { isBoolean, isFunction } from "@3fv/guard"
-import { toStringHelper } from "./toStringHelper"
+import { toStringHelper } from "./toStringHelper.js"
 
 /**
  * An Option is either [[Some]] or [[None]]

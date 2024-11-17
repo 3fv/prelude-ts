@@ -1,10 +1,10 @@
-import { WithEquality, Ordering, ToOrderable } from "./Comparison";
-import { HashMap } from "./HashMap";
-import { HashSet } from "./HashSet";
-import { Option } from "./Option";
-import { Collection } from "./Collection";
-import { Stream } from "./Stream";
-import { ToString } from "./ToString"
+import { WithEquality, Ordering, ToOrderable } from "./Comparison.js"
+import { HashMap } from "./HashMap.js"
+import { HashSet } from "./HashSet.js"
+import { Option } from "./Option.js"
+import { Collection } from "./Collection.js"
+import { Stream } from "./Stream.js"
+import { ToString } from "./ToString.js"
 
 /**
  * IterableArray can take a type and apply iterable to its

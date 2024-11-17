@@ -20,20 +20,20 @@
  *     LinkedList.of(1,2,3);
  *     LinkedList.of(1,2,3).map(x => x*2).last();
  */
-import { None, Option, Some } from "./Option"
-import { Vector } from "./Vector"
+import { None, Option, Some } from "./Option.js"
+import { Vector } from "./Vector.js"
 import {
   areEqual, getHashCode, Ordering, ToOrderable, WithEquality
-} from "./Comparison"
-import { contractTrueEquality } from "./Contract"
-import { inspect } from "./Value"
-import { HashMap } from "./HashMap"
-import { HashSet } from "./HashSet"
-import { IterableArray, Seq } from "./Seq"
-import { Stream } from "./Stream"
-import * as SeqHelpers from "./SeqHelpers"
-import { ToString } from "./ToString"
-import { toStringHelper } from "./toStringHelper"
+} from "./Comparison.js"
+import { contractTrueEquality } from "./Contract.js"
+import { inspect } from "./Value.js"
+import { HashMap } from "./HashMap.js"
+import { HashSet } from "./HashSet.js"
+import { IterableArray, Seq } from "./Seq.js"
+import { Stream } from "./Stream.js"
+import * as SeqHelpers from "./SeqHelpers.js"
+import { ToString } from "./ToString.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 /**
  * Holds the "static methods" for [[LinkedList]]

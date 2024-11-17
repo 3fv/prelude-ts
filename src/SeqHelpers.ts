@@ -1,11 +1,11 @@
-import { Option } from "./Option"
-import { Ordering, ToOrderable, WithEquality } from "./Comparison"
-import { HashMap } from "./HashMap"
-import { Seq } from "./Seq"
-import { Collection } from "./Collection"
-import { ConsStream, Stream } from "./Stream"
-import { Lazy } from "./Lazy"
-import { HashSet } from "./HashSet"
+import { Option } from "./Option.js"
+import { Ordering, ToOrderable, WithEquality } from "./Comparison.js"
+import { HashMap } from "./HashMap.js"
+import { Seq } from "./Seq.js"
+import { Collection } from "./Collection.js"
+import { ConsStream, Stream } from "./Stream.js"
+import { Lazy } from "./Lazy.js"
+import { HashSet } from "./HashSet.js"
 
 /**
  * @hidden

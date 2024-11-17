@@ -1,17 +1,17 @@
-import { inspect } from "./Value"
-import { Option } from "./Option"
-import { HashMap } from "./HashMap"
-import { HashSet } from "./HashSet"
-import { Stream } from "./Stream"
-import { IterableArray, Seq } from "./Seq"
+import { inspect } from "./Value.js"
+import { Option } from "./Option.js"
+import { HashMap } from "./HashMap.js"
+import { HashSet } from "./HashSet.js"
+import { Stream } from "./Stream.js"
+import { IterableArray, Seq } from "./Seq.js"
 import {
   areEqual, getHashCode, Ordering, ToOrderable, WithEquality
-} from "./Comparison"
-import * as SeqHelpers from "./SeqHelpers"
+} from "./Comparison.js"
+import * as SeqHelpers from "./SeqHelpers.js"
 import * as L from "list"
-import { ToString } from "./ToString"
-import { Bind } from "./decorators"
-import { toStringHelper } from "./toStringHelper"
+import { ToString } from "./ToString.js"
+import { Bind } from "./decorators/index.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 /**
  * A general-purpose list class with all-around good performance.

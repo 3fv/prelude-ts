@@ -1,20 +1,20 @@
-import { IMap } from "./IMap"
+import { IMap } from "./IMap.js"
 import {
   areEqual,
   getHashCode,
   hasEquals,
   HasEquals,
   WithEquality
-} from "./Comparison"
-import * as SeqHelpers from "./SeqHelpers"
-import { contractTrueEquality } from "./Contract"
-import { none, None, Option } from "./Option"
-import { HashSet } from "./HashSet"
-import { Vector } from "./Vector"
-import { LinkedList } from "./LinkedList"
-import { inspect } from "./Value"
-import { ToString } from "./ToString"
-import { toStringHelper } from "./toStringHelper"
+} from "./Comparison.js"
+import * as SeqHelpers from "./SeqHelpers.js"
+import { contractTrueEquality } from "./Contract.js"
+import { none, None, Option } from "./Option.js"
+import { HashSet } from "./HashSet.js"
+import { Vector } from "./Vector.js"
+import { LinkedList } from "./LinkedList.js"
+import { inspect } from "./Value.js"
+import { ToString } from "./ToString.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 const hamt: any = require("hamt_plus") as any
 

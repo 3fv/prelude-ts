@@ -1,5 +1,5 @@
-import { hasTrueEquality } from "./Comparison";
-import { toStringHelper } from "./toStringHelper"
+import { hasTrueEquality } from "./Comparison.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 let preludeTsContractViolationCb = (msg:string):never => { throw msg; };
 

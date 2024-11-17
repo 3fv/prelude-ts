@@ -2,8 +2,9 @@
   "name": "@3fv/prelude-ts",
   "version": "0.8.32",
   "description": "A typescript functional programming library",
-  "main": "dist/src/index.js",
-  "typings": "dist/src/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "typings": "dist/mjs/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -53,8 +54,12 @@
   },
   "homepage": "https://github.com/emmanueltouzery/prelude.ts#readme",
   "scripts": {
-    "build": "tsc -b tsconfig.json",
-    "build:watch": "yarn run build -w",
+    "build": "node ./scripts/build.mjs",
+    "//build:link": "yarn run build && yarn unlink;yarn link",
+    "build:watch": "yarn run build --watch",
+    "//build:watch": "run-s build:link && yarn run build --watch",
+    "//build": "tsc -b tsconfig.json",
+
     "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
     "test:clean": "rm -f tests/apidoc-*",
     "test:run": "./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",

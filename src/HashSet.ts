@@ -1,10 +1,10 @@
 // noinspection DuplicatedCode
 
-import { ISet, isSortOnSpec, SortBySpec, SortOnSpec } from "./ISet"
-import { Vector } from "./Vector"
-import { HashMap } from "./HashMap"
-import { LinkedList } from "./LinkedList"
-import { Option } from "./Option"
+import { ISet, isSortOnSpec, SortBySpec, SortOnSpec } from "./ISet.js"
+import { Vector } from "./Vector.js"
+import { HashMap } from "./HashMap.js"
+import { LinkedList } from "./LinkedList.js"
+import { Option } from "./Option.js"
 import {
   areEqual,
   getHashCode,
@@ -13,12 +13,12 @@ import {
   Ordering,
   ToOrderable,
   WithEquality
-} from "./Comparison"
-import * as SeqHelpers from "./SeqHelpers"
-import { contractTrueEquality } from "./Contract"
-import { inspect } from "./Value"
-import { ToString } from "./ToString"
-import { toStringHelper } from "./toStringHelper"
+} from "./Comparison.js"
+import * as SeqHelpers from "./SeqHelpers.js"
+import { contractTrueEquality } from "./Contract.js"
+import { inspect } from "./Value.js"
+import { ToString } from "./ToString.js"
+import { toStringHelper } from "./toStringHelper.js"
 
 const hamt: any = require("hamt_plus");
 

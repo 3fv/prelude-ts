@@ -19,13 +19,13 @@
  * Right has the extra [[Right.get]] method that [[Left]] doesn't have.
  */
 
-import { Value, inspect } from "./Value";
-import { Option } from "./Option";
-import { LinkedList } from "./LinkedList";
-import { Vector } from "./Vector";
+import { Value, inspect } from "./Value.js"
+import { Option } from "./Option.js"
+import { LinkedList } from "./LinkedList.js"
+import { Vector } from "./Vector.js"
 import { WithEquality, areEqual,
-         hasTrueEquality, getHashCode } from "./Comparison";
-import { contractTrueEquality} from "./Contract";
+         hasTrueEquality, getHashCode } from "./Comparison.js";
+import { contractTrueEquality} from "./Contract.js"
 
 /**
  * Holds the "static methods" for [[Either]]

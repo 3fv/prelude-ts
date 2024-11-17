@@ -20,8 +20,8 @@
  *         Predicate.isIn([2,3]).negate())
  *     => Vector.of(1, 4, 5)
  */
-import { WithEquality, areEqual } from "./Comparison";
-import { Vector } from "./Vector";
+import { WithEquality, areEqual } from "./Comparison.js"
+import { Vector } from "./Vector.js"
 
 /**
  * A predicate is a function taking one parameter and returning a boolean.
