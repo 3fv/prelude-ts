@@ -23,7 +23,7 @@
     "url": "ssh://git@github.com/3fv/prelude-ts.git"
   },
   "dependencies": {
-    "@3fv/guard": "^1.4.30",
+    "@3fv/guard": "^1.4.38",
     "hamt_plus": "^1.0.2",
     "list": "^2.0.19"
   },
