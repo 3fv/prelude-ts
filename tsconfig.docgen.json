@@ -1,7 +1,13 @@
 {
-    "extends": "./tsconfig.json",
-    "include": [
-        "src/**/*",
-        "scripts/**/*"
-    ]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "lib/test",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "ignoreDeprecations": "5.0",
+    "composite": false,
+    "incremental": false
+  },
+  "include": ["src", "scripts"]
 }

@@ -2,18 +2,18 @@
 
 import { $, argv, fs as Fs, path as Path, echo, usePwsh, which } from "zx"
 import Sh from "shelljs"
+import { readdirSync, readFileSync, writeFileSync, existsSync } from "fs"
+import { join, dirname } from "path"
 
 $.verbose = true
-//usePwsh()
 
 const scriptDir = import.meta.dirname
 const rootDir = Path.resolve(scriptDir, "..")
-const distDir = Path.join(rootDir, "dist")
-const cjsDir = Path.join(distDir, "cjs")
-
-const mjsDir = Path.join(distDir, "mjs")
+const libDir = Path.join(rootDir, "lib")
+const cjsDir = Path.join(libDir, "cjs")
+const esmDir = Path.join(libDir, "esm")
 const cjsJsonFile = Path.join(cjsDir, "package.json")
-const mjsJsonFile = Path.join(mjsDir, "package.json")
+const esmJsonFile = Path.join(esmDir, "package.json")
 
 const rawArgv = process.argv.slice(2)
 
@@ -29,7 +29,7 @@ const die = (msg, exitCode = 1, err = null) => {
       err.toString()
     }
   }
-  
+
   echo`ERROR: ${msg}`
   process.exit(exitCode)
 }
@@ -45,56 +45,61 @@ const run = (...args) => {
   )
 }
 
-Sh.mkdir("-p", mjsDir, cjsDir)
+Sh.mkdir("-p", esmDir, cjsDir)
 
-const cjsJson = `{
-    "type": "commonjs",
-    "main": "./index.js",
-    "module": "./index.js",
-    "exports": {
-      ".": {
-            "types": "./index.d.ts",
-            "node": "./index.js",
-            "browser": "./index.js",
-            "import": "./index.js",
-            "require": "./index.js",
-            "default": "./index.js"
-        }
-    }
-}`, mjsJson = `{
-    "type": "module",
-    "main": "./index.js",
-    "module": "./index.js",
-    "exports": {
-      ".": {
-            "types": "./index.d.ts",
-            "node": "./index.js",
-            "browser": "./index.js",
-            "import": "./index.js",
-            "require": "./index.js",
-            "default": "./index.js"
-        }
-    }
-}`
-
-// "exports": {
-//   ".": {
-//     "types": "./index.d.ts",
-//       "default": "./index.js"
-//   },
-//   "./appenders/FileAppender.js": {
-//     "types": "./appenders/FileAppender.d.ts",
-//       "default": "./appenders/FileAppender.js"
-//   }
-// }
-
-Fs.outputFileSync(cjsJsonFile, cjsJson, { encoding: "utf-8" })
-Fs.outputFileSync(mjsJsonFile, mjsJson, { encoding: "utf-8" })
+Fs.outputFileSync(cjsJsonFile, '{"type":"commonjs"}\n', { encoding: "utf-8" })
+Fs.outputFileSync(esmJsonFile, '{"type":"module"}\n', { encoding: "utf-8" })
 
 const tscArgs = ["-b", "tsconfig.json", ...rawArgv, "--preserveWatchOutput"]
 
-// echo`Building with args: ${tscArgs.join(" ")}`
-run("tsc", ...tscArgs)
+await run("tsc", ...tscArgs)
 
-echo`${distDir} successfully built`
+// Fix ESM imports — add .js extensions for Node.js native ESM resolution
+function fixImports(dir) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = join(dir, entry.name)
+    if (entry.isDirectory()) {
+      fixImports(fullPath)
+      continue
+    }
+    if (!entry.name.endsWith(".js") && !entry.name.endsWith(".d.ts")) continue
+    if (entry.name.endsWith(".d.ts.map")) continue
 
+    let content = readFileSync(fullPath, "utf8")
+    let changed = false
+
+    content = content.replace(
+      /((?:from|import)\s*\(?\s*["'])(\.\.?\/[^"']*)(["'])/g,
+      (match, pre, spec, suf) => {
+        if (
+          /\.\w+$/.test(spec) &&
+          (spec.endsWith(".js") ||
+            spec.endsWith(".mjs") ||
+            spec.endsWith(".cjs") ||
+            spec.endsWith(".json"))
+        ) {
+          return match
+        }
+        const base = dirname(fullPath)
+        if (existsSync(join(base, spec, "index.js"))) {
+          changed = true
+          return `${pre}${spec}/index.js${suf}`
+        }
+        if (existsSync(join(base, spec + ".js"))) {
+          changed = true
+          return `${pre}${spec}.js${suf}`
+        }
+        return match
+      }
+    )
+
+    if (changed) writeFileSync(fullPath, content)
+  }
+}
+
+if (existsSync(esmDir) && !rawArgv.includes("--watch") && !rawArgv.includes("-w")) {
+  fixImports(esmDir)
+  echo`Fixed ESM imports`
+}
+
+echo`${libDir} successfully built`

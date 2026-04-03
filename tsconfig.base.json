@@ -1,33 +1,46 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"lib": [
-			"DOM",
-			"esnext"
-		],
-		"module": "ESNext",
-		"moduleResolution": "node",
-		"moduleDetection": "auto",
-		"declaration": true,
-		"esModuleInterop": true,
-		"emitDecoratorMetadata": true,
-		"jsx": "react-jsx",
-		"skipDefaultLibCheck": true,
-		"skipLibCheck": true,
-		"experimentalDecorators": true,
-		"preserveConstEnums": true,
-		"allowSyntheticDefaultImports": true,
-		"sourceMap": true
-	},
-	"compileOnSave": true,
-	"include": [
-		"src",
-//		"tests"
-	],
-	"exclude": [
-		"dist",
-		"lib",
-		"node_modules"
-	]
-	
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "composite": true,
+    "incremental": true,
+    "noFallthroughCasesInSwitch": false,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "disableSizeLimit": false,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strictNullChecks": false,
+    "strict": false,
+    "preserveWatchOutput": true,
+    "target": "ES2022",
+    "types": ["node"]
+  },
+  "include": ["src"],
+  "exclude": [
+    "lib",
+    "dist",
+    "target",
+    "node_modules",
+    "**/*.js",
+    "**/lib/**",
+    "**/dist/**",
+    "**/target/**",
+    "**/node_modules/**"
+  ]
 }

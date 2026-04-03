@@ -2,17 +2,19 @@
   "name": "@3fv/prelude-ts",
   "version": "0.8.37",
   "description": "A typescript functional programming library",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/mjs/index.js",
-  "types": "./dist/mjs/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/mjs/index.d.ts",
-      "node": "./dist/cjs/index.js",
-      "browser": "./dist/mjs/index.js",
-      "import": "./dist/mjs/index.js",
-      "require": "./dist/cjs/index.js",
-      "default": "./dist/cjs/index.js"
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js",
+      "types": "./lib/esm/index.d.ts"
+    },
+    "./*": {
+      "import": "./lib/esm/*.js",
+      "require": "./lib/cjs/*.js",
+      "types": "./lib/esm/*.d.ts"
     }
   },
   "publishConfig": {
@@ -47,7 +49,7 @@
     "shelljs": "^0.8.5",
     "source-map-support": "^0.5.21",
     "typedoc": "^0.7.2",
-    "typescript": "^4.4.2",
+    "typescript": "^5.5.4",
     "uglify-js": "^3.6.0",
     "zx": "^8.2.2"
   },
@@ -67,23 +69,24 @@
     "build": "node ./scripts/build.mjs",
     "//build:link": "yarn run build && yarn unlink;yarn link",
     "build:watch": "yarn run build --watch",
+    "build:test": "tsc -p tsconfig.test.json",
     "//build:watch": "run-s build:link && yarn run build --watch",
     "//build": "tsc -b tsconfig.json",
-    "test:generate": "yarn test:clean && yarn build && node ./dist/tests/Comments.js",
+    "test:generate": "yarn test:clean && yarn build:test && node ./lib/test/tests/Comments.js",
     "test:clean": "rm -f tests/apidoc-*",
-    "test:run": "./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./dist/tests/*.js",
-    "test:run:watch": "./node_modules/mocha/bin/mocha -w --throw-deprecation --timeout 60000 ./dist/tests/*.js",
-    "test": "run-s test:generate build test:run",
-    "test:watch": "run-s test:generate build test:run:watch",
-    "clean": "yarn test:clean; rm -Rf ./dist",
+    "test:run": "./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./lib/test/tests/*.js",
+    "test:run:watch": "./node_modules/mocha/bin/mocha -w --throw-deprecation --timeout 60000 ./lib/test/tests/*.js",
+    "test": "run-s test:generate build:test test:run",
+    "test:watch": "run-s test:generate build:test test:run:watch",
+    "clean": "yarn test:clean; rm -Rf ./lib",
     "docgen": "./scripts/make_doc.sh",
-    "benchmarks": "tsc && node ./dist/benchmarks/bench.js",
+    "benchmarks": "tsc -p tsconfig.benchmarks.json && node ./lib/test/benchmarks/bench.js",
     "preversion": "yarn build",
     "postversion": "node ./scripts/release.mjs latest",
     "release": "yarn build  && yarn version --patch --non-interactive"
   },
   "files": [
-    "dist",
+    "lib",
     "src",
     "LICENSE.TXT",
     "README.md",

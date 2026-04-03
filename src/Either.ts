@@ -602,7 +602,7 @@ export class Left<L,R> implements Value {
     hasTrueEquality(): boolean {
         return (this.value && (<any>this.value).hasTrueEquality) ?
             (<any>this.value).hasTrueEquality() :
-            hasTrueEquality(this.value);
+            hasTrueEquality(this.value).getOrElse(false);
     }
 
     /**
@@ -887,7 +887,7 @@ export class Right<L,R> implements Value {
     hasTrueEquality(): boolean {
         return (this.value && (<any>this.value).hasTrueEquality) ?
             (<any>this.value).hasTrueEquality() :
-            hasTrueEquality(this.value);
+            hasTrueEquality(this.value).getOrElse(false);
     }
 
     /**
