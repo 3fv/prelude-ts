@@ -1,6 +1,6 @@
 {
   "name": "@3fv/prelude-ts",
-  "version": "0.8.37",
+  "version": "0.8.38",
   "description": "A typescript functional programming library",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -67,11 +67,8 @@
   "homepage": "https://github.com/emmanueltouzery/prelude.ts#readme",
   "scripts": {
     "build": "node ./scripts/build.mjs",
-    "//build:link": "yarn run build && yarn unlink;yarn link",
     "build:watch": "yarn run build --watch",
     "build:test": "tsc -p tsconfig.test.json",
-    "//build:watch": "run-s build:link && yarn run build --watch",
-    "//build": "tsc -b tsconfig.json",
     "test:generate": "yarn test:clean && yarn build:test && node ./lib/test/tests/Comments.js",
     "test:clean": "rm -f tests/apidoc-*",
     "test:run": "./node_modules/mocha/bin/mocha --throw-deprecation --timeout 60000 ./lib/test/tests/*.js",
@@ -83,7 +80,7 @@
     "benchmarks": "tsc -p tsconfig.benchmarks.json && node ./lib/test/benchmarks/bench.js",
     "preversion": "yarn build",
     "postversion": "node ./scripts/release.mjs latest",
-    "release": "yarn build  && yarn version --patch --non-interactive"
+    "release": "yarn build && yarn version --patch --non-interactive"
   },
   "files": [
     "lib",
