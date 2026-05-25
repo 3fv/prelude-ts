@@ -1,6 +1,6 @@
 {
   "name": "@3fv/prelude-ts",
-  "version": "0.8.41",
+  "version": "0.8.42",
   "description": "A typescript functional programming library",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
