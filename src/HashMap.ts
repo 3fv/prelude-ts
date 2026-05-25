@@ -15,8 +15,8 @@ import { LinkedList } from "./LinkedList.js"
 import { inspect } from "./Value.js"
 import { ToString } from "./ToString.js"
 import { toStringHelper } from "./toStringHelper.js"
-
-const hamt: any = require("hamt_plus") as any
+import hamt from "./internal/hamt_plus/hamt";
+// const hamt: any = require("hamt_plus") as any
 
 // HashMap could extend Collection, conceptually. But I'm
 // not super happy of having the callbacks get a pair, for instance

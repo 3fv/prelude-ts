@@ -19,8 +19,8 @@ import { contractTrueEquality } from "./Contract.js"
 import { inspect } from "./Value.js"
 import { ToString } from "./ToString.js"
 import { toStringHelper } from "./toStringHelper.js"
-
-const hamt: any = require("hamt_plus");
+import hamt from "./internal/hamt_plus/hamt";
+// const hamt: any = require("hamt_plus");
 
 /**
  * An unordered collection of values, where no two values

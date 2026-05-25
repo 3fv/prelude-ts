@@ -6,7 +6,8 @@ import { ToString } from "./ToString.js"
  * @hidden
  */
 // @ts-ignore -- see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30241
-export const inspect: unique symbol = typeof "window" !== "undefined" ? Symbol("inspect") : require("util").inspect.custom;
+export const inspect: unique symbol = Symbol("inspect")
+//: require("util").inspect.custom;
 
 export interface Value extends ToString {
 

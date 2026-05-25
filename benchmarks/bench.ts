@@ -7,6 +7,7 @@ import { Vector } from "../src/Vector";
 import { HashSet } from "../src/HashSet";
 import { HashMap } from "../src/HashMap";
 import { LinkedList } from "../src/LinkedList";
+import hamt from "../src/internal/hamt_plus/hamt";
 
 // import immutables through require for now so that
 // the immutables typescript type definitions are not
@@ -15,7 +16,6 @@ import { LinkedList } from "../src/LinkedList";
 const imm: any = require('immutable');
 // import * as imm from 'immutable';
 
-const hamt: any = require("hamt_plus");
 const hamtBase: any = require("hamt");
 
 import * as Funkia from "list";
