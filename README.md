@@ -4,8 +4,7 @@
 
 this is simply a published version with several additions
 
-[![NPM version][npm-image]][npm-url] [![Tests][circleci-image]][circleci-url]
-[![apidoc][apidoc-image]][apidoc-url]
+[![NPM version][npm-image]][npm-url] [![apidoc][apidoc-image]][apidoc-url]
 
 ## Intro
 
@@ -208,18 +207,22 @@ As of 0.8.2, prelude requires TypeScript 3.1 or newer.
 
 ## Commands
 
-The package manager is yarn.
+The package manager is pnpm (version pinned by `packageManager` in
+`package.json`; `pnpm-lock.yaml` is committed).
 
 | Command             | What it does                                                                                                                                                                                                                   |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `yarn install`      | Install dependencies                                                                                                                                                                                                           |
-| `yarn build`        | Compile `src/` to `lib/esm` and `lib/cjs` (with declarations)                                                                                                                                                                  |
-| `yarn test`         | Build the package, generate the API-doc sample tests into `generated/apidoc-tests/`, compile `tests/` and the generated tests to `lib/test/`, and run them with mocha (needs network access for the documentation link checks) |
-| `yarn format`       | Apply prettier to every file                                                                                                                                                                                                   |
-| `yarn format:check` | Check that every file is prettier-formatted                                                                                                                                                                                    |
-| `yarn docgen`       | Generate the API documentation into `apidoc/`                                                                                                                                                                                  |
-| `yarn benchmarks`   | Build the package, then compile and run `benchmarks/`                                                                                                                                                                          |
-| `yarn release`      | Dispatch the `Release` GitHub Actions workflow on `master` with a patch bump (needs the `gh` CLI)                                                                                                                              |
+| `pnpm install`      | Install dependencies                                                                                                                                                                                                           |
+| `pnpm build`        | Compile `src/` to `lib/esm` and `lib/cjs` (with declarations)                                                                                                                                                                  |
+| `pnpm test`         | Build the package, generate the API-doc sample tests into `generated/apidoc-tests/`, compile `tests/` and the generated tests to `lib/test/`, and run them with mocha (needs network access for the documentation link checks) |
+| `pnpm format`       | Apply prettier to every file                                                                                                                                                                                                   |
+| `pnpm format:check` | Check that every file is prettier-formatted                                                                                                                                                                                    |
+| `pnpm docgen`       | Generate the API documentation into `apidoc/`                                                                                                                                                                                  |
+| `pnpm benchmarks`   | Build the package, then compile and run `benchmarks/`                                                                                                                                                                          |
+| `pnpm release`      | Dispatch the `Release` GitHub Actions workflow on `master` with a patch bump (needs the `gh` CLI)                                                                                                                              |
+
+Dependency build scripts run only when allowed in `pnpm-workspace.yaml`
+(`allowBuilds`).
 
 Tests, benchmarks and scripts import the library by its package name
 (`@3fv/prelude-ts`, resolved through `package.json` `exports` to the built
@@ -229,11 +232,11 @@ enforces this.
 ## Releasing
 
 Releases run entirely in GitHub Actions (`.github/workflows/release.yml`),
-started by `yarn release` or by
+started by `pnpm release` or by
 `gh workflow run release.yml --ref master -f bump=<patch|minor|major|none>` (add
 `-f dist-tag=<tag>` to publish under a tag other than `latest`):
 
-1. The `version` job runs `yarn version`, which builds the package and commits
+1. The `version` job runs `pnpm version`, which builds the package and commits
    and tags `vX.Y.Z`, and pushes both to `master`.
 2. The `publish` job checks out that tag, builds it and runs `npm publish`
    through npm trusted publishing, so no npm token or two-factor prompt is
@@ -248,9 +251,6 @@ Trusted publishing needs a one-time registration of the workflow on npm:
 
 [npm-image]: https://img.shields.io/npm/v/prelude-ts.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/prelude-ts
-[circleci-image]:
-  https://circleci.com/gh/emmanueltouzery/prelude-ts.svg?style=shield
-[circleci-url]: https://circleci.com/gh/emmanueltouzery/prelude-ts
 [apidoc-image]: http://emmanueltouzery.github.io/prelude.ts/apidoc.svg
 [apidoc-url]:
   http://emmanueltouzery.github.io/prelude.ts/latest/apidoc/globals.html

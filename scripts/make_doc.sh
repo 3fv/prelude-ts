@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-yarn install
+pnpm install
 PATH="$PWD/node_modules/.bin:$PATH"
-yarn build
+pnpm build
 tsc -p tsconfig.docgen.json
 
 # https://github.com/TypeStrong/typedoc/issues/564

@@ -1,6 +1,7 @@
 {
   "name": "@3fv/prelude-ts",
   "version": "0.8.44",
+  "packageManager": "pnpm@12.15.0",
   "description": "A typescript functional programming library",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -67,20 +68,20 @@
   "homepage": "https://github.com/emmanueltouzery/prelude.ts#readme",
   "scripts": {
     "build": "node ./scripts/build.mjs",
-    "build:watch": "yarn run build --watch",
+    "build:watch": "pnpm run build --watch",
     "build:test": "tsc -p tsconfig.test.json",
-    "test:generate": "yarn test:clean && yarn build:test && node ./lib/test/tests/Comments.js",
+    "test:generate": "pnpm test:clean && pnpm build:test && node ./lib/test/tests/Comments.js",
     "test:clean": "rm -rf ./generated/apidoc-tests ./lib/test",
     "test:run": "mocha --throw-deprecation --timeout 60000 --ignore 'lib/test/tests/Comments.js' 'lib/test/tests/*.js' 'lib/test/generated/apidoc-tests/*.js'",
     "test:run:watch": "mocha -w --throw-deprecation --timeout 60000 --ignore 'lib/test/tests/Comments.js' 'lib/test/tests/*.js' 'lib/test/generated/apidoc-tests/*.js'",
     "test": "run-s build test:generate build:test test:run",
     "test:watch": "run-s build test:generate build:test test:run:watch",
-    "clean": "yarn test:clean; rm -Rf ./lib ./generated",
+    "clean": "pnpm test:clean; rm -Rf ./lib ./generated",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "docgen": "./scripts/make_doc.sh",
-    "benchmarks": "yarn build && tsc -p tsconfig.benchmarks.json && node ./lib/test/benchmarks/bench.js",
-    "preversion": "yarn build",
+    "benchmarks": "pnpm build && tsc -p tsconfig.benchmarks.json && node ./lib/test/benchmarks/bench.js",
+    "preversion": "pnpm build",
     "release": "gh workflow run release.yml --ref master -f bump=patch"
   },
   "files": [

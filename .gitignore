@@ -8,10 +8,8 @@ node_modules/
 apidoc/
 generated/
 npm-debug.log
-# we have only one non-dev dependency,
-# we hardcode its version,
-# and that one has zero dependency
-# => skip the package lock stuff.
+# pnpm is the package manager and pnpm-lock.yaml is tracked;
+# lockfiles of other package managers are never committed.
 package-lock.json
 yarn.lock
 *.log

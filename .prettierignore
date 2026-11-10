@@ -7,10 +7,10 @@ apidoc/
 
 # package manager and local tool state
 node_modules/
-yarn.lock
-package-lock.json
+pnpm-lock.yaml
 .ai/
 .claude/
 .idea/
 .omc/
 .remember/
+.vscode/
