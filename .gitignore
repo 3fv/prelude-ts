@@ -1,9 +1,23 @@
-.ai
-.claude
-.idea
 *.tsbuildinfo
-dist/
-lib/
+# Local agent tooling state
+.omc*
+.omx*
+.remember
+.vscode
+
+# JetBrains template
+.idea
+*.iws
+/out/
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+
+lib
+dist
+
 node_modules/
 apidoc/
 generated/

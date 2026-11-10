@@ -82,7 +82,7 @@
     "docgen": "./scripts/make_doc.sh",
     "benchmarks": "pnpm build && tsc -p tsconfig.benchmarks.json && node ./lib/test/benchmarks/bench.js",
     "preversion": "pnpm build",
-    "release": "gh workflow run release.yml --ref master -f bump=patch"
+    "release": "gh workflow run release.yml --repo 3fv/prelude-ts --ref master -f bump=patch"
   },
   "files": [
     "lib",
