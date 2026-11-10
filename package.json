@@ -81,8 +81,7 @@
     "docgen": "./scripts/make_doc.sh",
     "benchmarks": "yarn build && tsc -p tsconfig.benchmarks.json && node ./lib/test/benchmarks/bench.js",
     "preversion": "yarn build",
-    "postversion": "node ./scripts/release.mjs latest",
-    "release": "yarn build && yarn version --patch --non-interactive"
+    "release": "gh workflow run release.yml --ref master -f bump=patch"
   },
   "files": [
     "lib",

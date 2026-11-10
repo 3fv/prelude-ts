@@ -219,11 +219,32 @@ The package manager is yarn.
 | `yarn format:check` | Check that every file is prettier-formatted                                                                                                                                                                                    |
 | `yarn docgen`       | Generate the API documentation into `apidoc/`                                                                                                                                                                                  |
 | `yarn benchmarks`   | Build the package, then compile and run `benchmarks/`                                                                                                                                                                          |
+| `yarn release`      | Dispatch the `Release` GitHub Actions workflow on `master` with a patch bump (needs the `gh` CLI)                                                                                                                              |
 
 Tests, benchmarks and scripts import the library by its package name
 (`@3fv/prelude-ts`, resolved through `package.json` `exports` to the built
 `lib/`), never by a relative path into `src/`; `tests/ImportBoundaries.ts`
 enforces this.
+
+## Releasing
+
+Releases run entirely in GitHub Actions (`.github/workflows/release.yml`),
+started by `yarn release` or by
+`gh workflow run release.yml --ref master -f bump=<patch|minor|major|none>` (add
+`-f dist-tag=<tag>` to publish under a tag other than `latest`):
+
+1. The `version` job runs `yarn version`, which builds the package and commits
+   and tags `vX.Y.Z`, and pushes both to `master`.
+2. The `publish` job checks out that tag, builds it and runs `npm publish`
+   through npm trusted publishing, so no npm token or two-factor prompt is
+   involved. If it fails, re-run that job alone: it publishes the same tag.
+
+`bump=none` publishes the version already in `package.json` at the dispatched
+commit without bumping or tagging.
+
+Trusted publishing needs a one-time registration of the workflow on npm:
+
+    npm trust github @3fv/prelude-ts --repo 3fv/prelude-ts --file release.yml --allow-publish
 
 [npm-image]: https://img.shields.io/npm/v/prelude-ts.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/prelude-ts
