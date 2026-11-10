@@ -1,31 +1,45 @@
-import { Vector } from "../../src/Vector";
-import { HashMap } from "../../src/HashMap";
-import { HashSet } from "../../src/HashSet";
-import { writeFileSync } from "fs";
-import * as helpers from "./helpers";
+import { Vector, HashMap, HashSet } from "@3fv/prelude-ts"
+import { writeFileSync } from "fs"
+import * as helpers from "./helpers"
 
 // group classes & interfaces by category.
-const CATEGORIES = Vector.of<[string,Vector<string>]>(
-    ["Control", Vector.of(
-        "Either", "Option", "Lazy",
-        "Function", "Predicate", "Future")],
-    ["Collection", Vector.of(
-        "Collection", "Foldable",
-        "IMap","IterableArray","HashMap", "ISet", "HashSet",
-        "Seq", "LinkedList", "Stream", "Vector",
-        "Tuple2", "SortOnSpec", "SortBySpec")],
-    ["Core", Vector.of(
-        "Comparison", "Value", "Contract")]);
+const CATEGORIES = Vector.of<[string, Vector<string>]>(
+  [
+    "Control",
+    Vector.of("Either", "Option", "Lazy", "Function", "Predicate", "Future")
+  ],
+  [
+    "Collection",
+    Vector.of(
+      "Collection",
+      "Foldable",
+      "IMap",
+      "IterableArray",
+      "HashMap",
+      "ISet",
+      "HashSet",
+      "Seq",
+      "LinkedList",
+      "Stream",
+      "Vector",
+      "Tuple2",
+      "SortOnSpec",
+      "SortBySpec"
+    )
+  ],
+  ["Core", Vector.of("Comparison", "Value", "Contract")]
+)
 
-function getSectionHeader(sectionName:string): string {
-    return `${helpers.indent(6)}<section class="tsd-index-section">` +
-        `${helpers.indent(7)}<h3>${sectionName}</h3>` +
-        `${helpers.indent(7)}<ul class="tsd-index-list">\n`;
+function getSectionHeader(sectionName: string): string {
+  return (
+    `${helpers.indent(6)}<section class="tsd-index-section">` +
+    `${helpers.indent(7)}<h3>${sectionName}</h3>` +
+    `${helpers.indent(7)}<ul class="tsd-index-list">\n`
+  )
 }
 
 function getSectionFooter(): string {
-    return `${helpers.indent(7)}</ul>` +
-        `${helpers.indent(6)}</section>`;
+  return `${helpers.indent(7)}</ul>` + `${helpers.indent(6)}</section>`
 }
 
 // improve the typedoc 'globals' screen by
@@ -41,50 +55,60 @@ function getSectionFooter(): string {
 // So everything is in the base namespace, but I can
 // at least do some grouping in the apidocs.
 export function groupGlobalsByCategory(): void {
-    // we'll modify the 'globals' typedoc file.
-    const lines = helpers.fileGetLinesByIndent("apidoc/globals.html");
+  // we'll modify the 'globals' typedoc file.
+  const lines = helpers.fileGetLinesByIndent("apidoc/globals.html")
 
-    // i'm interested in the part within 'tsd-index-content'
-    const [beforeIndexContent,indexContent,afterIndexContent] =
-        helpers.linesByIndentGetTagContents(lines, "div", l => l.indexOf("tsd-index-content") >= 0);
+  // i'm interested in the part within 'tsd-index-content'
+  const [beforeIndexContent, indexContent, afterIndexContent] =
+    helpers.linesByIndentGetTagContents(
+      lines,
+      "div",
+      (l) => l.indexOf("tsd-index-content") >= 0
+    )
 
-    // right now i have the part of interest. I can regenerate the wrapping items
-    // the items which interest me are the leaves, which are <li> tags,
-    // and I'll group them by their name (class name, interface name...).
-    const liRows = indexContent
-        .map(l => l.contents)
-        .filter(t => t.indexOf("<li") >= 0)
-        .arrangeBy(row => helpers.requireNotNull(row.match(/>([\w<>]+)<\//))[1].replace(/<wbr>/g,""))
-        .getOrThrow("globals.arrangeBy failed!");
+  // right now i have the part of interest. I can regenerate the wrapping items
+  // the items which interest me are the leaves, which are <li> tags,
+  // and I'll group them by their name (class name, interface name...).
+  const liRows = indexContent
+    .map((l) => l.contents)
+    .filter((t) => t.indexOf("<li") >= 0)
+    .arrangeBy((row) =>
+      helpers
+        .requireNotNull(row.match(/>([\w<>]+)<\//))[1]
+        .replace(/<wbr>/g, "")
+    )
+    .getOrThrow("globals.arrangeBy failed!")
 
-    // start preparing the new contents for the indexContent
-    let newIndexContent = `${helpers.indent(5)}<div class="tsd-index-content">`;
+  // start preparing the new contents for the indexContent
+  let newIndexContent = `${helpers.indent(5)}<div class="tsd-index-content">`
 
-    const allKnownElements = CATEGORIES
-        .map(c=>c[1])
-        .flatMap(x=>x)
-        .transform(HashSet.ofIterable);
+  const allKnownElements = CATEGORIES.map((c) => c[1])
+    .flatMap((x) => x)
+    .transform(HashSet.ofIterable)
 
-    const missingElements = liRows.keySet().diff(allKnownElements);
-    if (!missingElements.isEmpty()) {
-        throw "Missing the following elements: " + missingElements;
-    }
+  const missingElements = liRows.keySet().diff(allKnownElements)
+  if (!missingElements.isEmpty()) {
+    throw "Missing the following elements: " + missingElements
+  }
 
-    CATEGORIES.forEach(([name,elements]) => {
-        newIndexContent += getSectionHeader(name);
-        const rows = elements.map(elt => liRows.get(elt).getOrThrow("can't find row for " + elt));
-        newIndexContent += rows.mkString("\n");
-        newIndexContent += getSectionFooter();
-    });
+  CATEGORIES.forEach(([name, elements]) => {
+    newIndexContent += getSectionHeader(name)
+    const rows = elements.map((elt) =>
+      liRows.get(elt).getOrThrow("can't find row for " + elt)
+    )
+    newIndexContent += rows.mkString("\n")
+    newIndexContent += getSectionFooter()
+  })
 
-    // conclude the new contents for the indexContent
-    newIndexContent += `${helpers.indent(5)}</div>\n`; // close tsd-index-content
+  // conclude the new contents for the indexContent
+  newIndexContent += `${helpers.indent(5)}</div>\n` // close tsd-index-content
 
-    // overwrite globals.html -- first the text before the indexContent,
-    // then the modified indexContent, then the rest.
-    writeFileSync(
-        'apidoc/globals.html',
-        helpers.linesByIndentStr(beforeIndexContent) +
-            newIndexContent +
-            helpers.linesByIndentStr(afterIndexContent));
+  // overwrite globals.html -- first the text before the indexContent,
+  // then the modified indexContent, then the rest.
+  writeFileSync(
+    "apidoc/globals.html",
+    helpers.linesByIndentStr(beforeIndexContent) +
+      newIndexContent +
+      helpers.linesByIndentStr(afterIndexContent)
+  )
 }

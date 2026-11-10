@@ -2,7 +2,6 @@ import { Vector } from "./Vector.js"
 import { Option } from "./Option.js"
 import { Either } from "./Either.js"
 import { HashMap } from "./HashMap.js"
-import { ToString } from "./ToString.js"
 import { isPromise } from "@3fv/guard"
 
 /**
@@ -28,7 +27,7 @@ export type FutureDisposerMode = "then-catch" | "finally"
 /**
  * Disposer for promise
  */
-export type FutureDisposer<T extends ToString> = (
+export type FutureDisposer<T> = (
   err?: Error,
   value?: T,
   future?: Future<T>
@@ -44,7 +43,7 @@ export type FutureDisposer<T extends ToString> = (
  * be computed once at most. Once it's computed, calling [[Future.map]] or
  * `await` will return instantly.
  */
-export class Future<T extends ToString> {
+export class Future<T> {
   /**
    * A Disposal tool for resource cleanup, by default, uses finally mode
    *
@@ -58,45 +57,45 @@ export class Future<T extends ToString> {
     let invoked = false
 
     // CREATE WRAPPED HANDLER
-    const wrappedFn = <Type extends PromiseInvokeType>(
-      type: PromiseInvokeType
-    ) => (value?: PromiseInvokeArg<Type, T>) => {
-      if (invoked) {
-        if (type === "then") {
-          return value
-        } else if (type === "catch") {
-          return Promise.reject(value as Error)
-        } else {
-          // FINALLY DISPOSER
-        }
-      } else {
-        invoked = true
-        if (type === "then") {
-          const resolve = () => Promise.resolve(value)
-          return Promise.resolve(dispose(null, value as T, this))
-            .then(resolve)
-            .catch(resolve)
-        } else if (type === "finally") {
-          const onErr = (err) => {
-            console.error(`disposer failed`, err)
+    const wrappedFn =
+      <Type extends PromiseInvokeType>(type: PromiseInvokeType) =>
+      (value?: PromiseInvokeArg<Type, T>) => {
+        if (invoked) {
+          if (type === "then") {
+            return value
+          } else if (type === "catch") {
+            return Promise.reject(value as Error)
+          } else {
+            // FINALLY DISPOSER
           }
-
-          try {
-            const res = dispose(null, value as T, this)
-            if (isPromise(res)) {
-              res.catch(onErr)
+        } else {
+          invoked = true
+          if (type === "then") {
+            const resolve = () => Promise.resolve(value)
+            return Promise.resolve(dispose(null, value as T, this))
+              .then(resolve)
+              .catch(resolve)
+          } else if (type === "finally") {
+            const onErr = (err) => {
+              console.error(`disposer failed`, err)
             }
-          } catch (err) {
-            onErr(err)
+
+            try {
+              const res = dispose(null, value as T, this)
+              if (isPromise(res)) {
+                res.catch(onErr)
+              }
+            } catch (err) {
+              onErr(err)
+            }
+          } else {
+            const reject = () => Promise.reject(value)
+            return Promise.resolve(dispose(value as Error, null, this))
+              .then(reject)
+              .catch(reject)
           }
-        } else {
-          const reject = () => Promise.reject(value)
-          return Promise.resolve(dispose(value as Error, null, this))
-            .then(reject)
-            .catch(reject)
         }
       }
-    }
 
     let nextPromise: Promise<T[]>
     if (mode === "finally") {

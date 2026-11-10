@@ -6,8 +6,8 @@ dist/
 lib/
 node_modules/
 apidoc/
+generated/
 npm-debug.log
-tests/apidoc-*
 # we have only one non-dev dependency,
 # we hardcode its version,
 # and that one has zero dependency

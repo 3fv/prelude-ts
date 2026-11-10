@@ -1,40 +1,41 @@
-import { areEqual, fieldsHashCode } from "../src/Comparison";
+import { areEqual, fieldsHashCode } from "@3fv/prelude-ts"
 
 /**
  * @hidden
  */
 export class MyClass {
-    constructor(private field1:string, private field2:number) {}
-    equals(other: MyClass): boolean {
-        if (!other) {
-            return false;
-        }
-        return areEqual(this.field1, other.field1) &&
-            areEqual(this.field2, other.field2);
+  constructor(private field1: string, private field2: number) {}
+  equals(other: MyClass): boolean {
+    if (!other) {
+      return false
     }
-    getField1(): string {
-        return this.field1;
-    }
-    getField2(): number {
-        return this.field2;
-    }
-    hashCode(): number {
-        return fieldsHashCode(this.field1, this.field2);
-    }
-    toString(): string {
-        return `{field1: ${this.field1}, field2: ${this.field2}}`;
-    }
+    return (
+      areEqual(this.field1, other.field1) && areEqual(this.field2, other.field2)
+    )
+  }
+  getField1(): string {
+    return this.field1
+  }
+  getField2(): number {
+    return this.field2
+  }
+  hashCode(): number {
+    return fieldsHashCode(this.field1, this.field2)
+  }
+  toString(): string {
+    return `{field1: ${this.field1}, field2: ${this.field2}}`
+  }
 }
 
 /**
  * @hidden
  */
 export class MySubclass extends MyClass {
-    constructor(field1: string, field2:number, private field3:string) {
-        super(field1,field2);
-        this.field3 = field3;
-    }
-    getField3(): string {
-        return this.field3;
-    }
+  constructor(field1: string, field2: number, private field3: string) {
+    super(field1, field2)
+    this.field3 = field3
+  }
+  getField3(): string {
+    return this.field3
+  }
 }

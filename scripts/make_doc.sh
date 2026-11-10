@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-npm install --no-package-lock
+yarn install
 PATH="$PWD/node_modules/.bin:$PATH"
+yarn build
 tsc -p tsconfig.docgen.json
 
 # https://github.com/TypeStrong/typedoc/issues/564

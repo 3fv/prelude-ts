@@ -1,3 +1,3 @@
-export * from './hamt';
+export * from "./hamt"
 
-export { default } from './hamt';
+export { default } from "./hamt"

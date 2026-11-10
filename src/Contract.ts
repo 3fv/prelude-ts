@@ -1,7 +1,9 @@
 import { hasTrueEquality } from "./Comparison.js"
 import { toStringHelper } from "./toStringHelper.js"
 
-let preludeTsContractViolationCb = (msg:string):never => { throw msg; };
+let preludeTsContractViolationCb = (msg: string): never => {
+  throw msg
+}
 
 /**
  * Some programmatic errors are only detectable at runtime
@@ -19,33 +21,37 @@ let preludeTsContractViolationCb = (msg:string):never => { throw msg; };
  *  HashSet.of(Option.of([1]))
  *  => throws
  */
-export function setContractViolationAction(action: (msg:string)=>never) {
-    preludeTsContractViolationCb = action;
+export function setContractViolationAction(action: (msg: string) => never) {
+  preludeTsContractViolationCb = action
 }
 
 /**
  * @hidden
  */
 export function reportContractViolation(msg: string): void {
-    preludeTsContractViolationCb(msg);
+  preludeTsContractViolationCb(msg)
 }
 
 /**
  * @hidden
  */
 export function contractTrueEquality(context: string, ...vals: Array<any>) {
-    for (const val of vals) {
-        if (val) {
-            if (val.hasTrueEquality && (!val.hasTrueEquality())) {
-                reportContractViolation(
-                    context + ": element doesn't support true equality: " + toStringHelper(val));
-            }
-            if (!hasTrueEquality(val).getOrThrow()) {
-                reportContractViolation(
-                    context + ": element doesn't support equality: " + toStringHelper(val));
-            }
-            // the first element i find is looking good, aborting
-            return;
-        }
+  for (const val of vals) {
+    if (val) {
+      if (val.hasTrueEquality && !val.hasTrueEquality()) {
+        reportContractViolation(
+          context +
+            ": element doesn't support true equality: " +
+            toStringHelper(val)
+        )
+      }
+      if (!hasTrueEquality(val).getOrThrow()) {
+        reportContractViolation(
+          context + ": element doesn't support equality: " + toStringHelper(val)
+        )
+      }
+      // the first element i find is looking good, aborting
+      return
     }
+  }
 }

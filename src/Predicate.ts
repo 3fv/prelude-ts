@@ -35,33 +35,32 @@ import { Vector } from "./Vector.js"
  * 'Predicate' global constant.
  */
 export interface Predicate<T> {
+  /**
+   * Does the predicate hold for the value you give?
+   * Returns true or false
+   */
+  (x: T): boolean
 
-    /**
-     * Does the predicate hold for the value you give?
-     * Returns true or false
-     */
-    (x:T): boolean;
+  /**
+   * Combines two predicates with the 'and' logical operation.
+   * For instance:
+   *
+   *     Predicate.of((x: number) => x > 10).and(x => x < 20)
+   */
+  and(fn: (x: T) => boolean): Predicate<T>
 
-    /**
-     * Combines two predicates with the 'and' logical operation.
-     * For instance:
-     *
-     *     Predicate.of((x: number) => x > 10).and(x => x < 20)
-     */
-    and(fn:(x:T)=>boolean): Predicate<T>;
+  /**
+   * Combines two predicates with the 'or' logical operation.
+   * For instance:
+   *
+   *     Predicate.of((x: number) => x < 5).or(x => x > 10)
+   */
+  or(fn: (x: T) => boolean): Predicate<T>
 
-    /**
-     * Combines two predicates with the 'or' logical operation.
-     * For instance:
-     *
-     *     Predicate.of((x: number) => x < 5).or(x => x > 10)
-     */
-    or(fn:(x:T)=>boolean): Predicate<T>;
-
-    /**
-     * Unary operation to negate the predicate.
-     */
-    negate(): Predicate<T>;
+  /**
+   * Unary operation to negate the predicate.
+   */
+  negate(): Predicate<T>
 }
 
 /**
@@ -72,58 +71,67 @@ export interface Predicate<T> {
  * Predicates like with [[PredicateStatic.allOf]].
  */
 export class PredicateStatic {
+  /**
+   * Take a predicate function and of it to become a [[Predicate]]
+   * (enabling you to call [[Predicate.and]], and other logic operations on it)
+   */
+  of<T>(fn: (x: T) => boolean): Predicate<T> {
+    const r = <Predicate<T>>fn
+    r.and = (other: (x: T) => boolean) =>
+      Predicate.of((x: T) => r(x) && other(x))
+    r.or = (other: (x: T) => boolean) =>
+      Predicate.of((x: T) => r(x) || other(x))
+    r.negate = () => Predicate.of((x: T) => !fn(x))
+    return r
+  }
 
-    /**
-     * Take a predicate function and of it to become a [[Predicate]]
-     * (enabling you to call [[Predicate.and]], and other logic operations on it)
-     */
-    of<T>(fn: (x:T)=>boolean): Predicate<T> {
-        const r = <Predicate<T>>fn;
-        r.and = (other:(x:T)=>boolean) => Predicate.of((x:T) => r(x) && other(x));
-        r.or = (other:(x:T)=>boolean) => Predicate.of((x:T) => r(x) || other(x));
-        r.negate = () => Predicate.of((x:T) => !fn(x));
-        return r;
-    }
+  /**
+   * Return a [[Predicate]] checking whether a value is equal to the
+   * value you give as parameter.
+   */
+  equals<T>(other: T & WithEquality): Predicate<T & WithEquality> {
+    return Predicate.of((x) => areEqual(other, x))
+  }
 
-    /**
-     * Return a [[Predicate]] checking whether a value is equal to the
-     * value you give as parameter.
-     */
-    equals<T>(other: T&WithEquality): Predicate<T&WithEquality> {
-        return Predicate.of(x => areEqual(other, x));
-    }
+  /**
+   * Return a [[Predicate]] checking whether a value is contained in the
+   * list of values you give as parameter.
+   */
+  isIn<T>(others: Iterable<T & WithEquality>): Predicate<T & WithEquality> {
+    return Predicate.of<T & WithEquality>((x) =>
+      Vector.ofIterable(others).contains(x)
+    )
+  }
 
-    /**
-     * Return a [[Predicate]] checking whether a value is contained in the
-     * list of values you give as parameter.
-     */
-    isIn<T>(others: Iterable<T&WithEquality>): Predicate<T&WithEquality> {
-        return Predicate.of<T&WithEquality>(x => Vector.ofIterable(others).contains(x));
-    }
+  /**
+   * Return a [[Predicate]] checking whether all of the predicate functions given hold
+   */
+  allOf<T>(...predicates: Array<(x: T) => boolean>): Predicate<T> {
+    return Predicate.of<T>((x) =>
+      Vector.ofIterable(predicates).allMatch((p) => p(x))
+    )
+  }
 
-    /**
-     * Return a [[Predicate]] checking whether all of the predicate functions given hold
-     */
-    allOf<T>(...predicates: Array<(x:T)=>boolean>): Predicate<T> {
-        return Predicate.of<T>(x => Vector.ofIterable(predicates).allMatch(p=>p(x)));
-    }
+  /**
+   * Return a [[Predicate]] checking whether any of the predicate functions given hold
+   */
+  anyOf<T>(...predicates: Array<(x: T) => boolean>): Predicate<T> {
+    return Predicate.of<T>((x) =>
+      Vector.ofIterable(predicates).anyMatch((p) => p(x))
+    )
+  }
 
-    /**
-     * Return a [[Predicate]] checking whether any of the predicate functions given hold
-     */
-    anyOf<T>(...predicates: Array<(x:T)=>boolean>): Predicate<T> {
-        return Predicate.of<T>(x => Vector.ofIterable(predicates).anyMatch(p=>p(x)));
-    }
-
-    /**
-     * Return a [[Predicate]] checking whether none of the predicate functions given hold
-     */
-    noneOf<T>(...predicates: Array<(x:T)=>boolean>): Predicate<T> {
-        return Predicate.of<T>(x => !Vector.ofIterable(predicates).anyMatch(p=>p(x)));
-    }
+  /**
+   * Return a [[Predicate]] checking whether none of the predicate functions given hold
+   */
+  noneOf<T>(...predicates: Array<(x: T) => boolean>): Predicate<T> {
+    return Predicate.of<T>(
+      (x) => !Vector.ofIterable(predicates).anyMatch((p) => p(x))
+    )
+  }
 }
 
 /**
  * The Predicate constant allows to call the [[Predicate]] "static" methods.
  */
-export const Predicate = new PredicateStatic();
+export const Predicate = new PredicateStatic()

@@ -97,7 +97,11 @@ function fixImports(dir) {
   }
 }
 
-if (existsSync(esmDir) && !rawArgv.includes("--watch") && !rawArgv.includes("-w")) {
+if (
+  existsSync(esmDir) &&
+  !rawArgv.includes("--watch") &&
+  !rawArgv.includes("-w")
+) {
   fixImports(esmDir)
   echo`Fixed ESM imports`
 }

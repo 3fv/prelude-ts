@@ -1,0 +1,16 @@
+# build and generated output
+lib/
+dist/
+generated/
+apidoc/
+*.tsbuildinfo
+
+# package manager and local tool state
+node_modules/
+yarn.lock
+package-lock.json
+.ai/
+.claude/
+.idea/
+.omc/
+.remember/

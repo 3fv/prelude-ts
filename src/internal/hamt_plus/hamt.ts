@@ -56,7 +56,7 @@ export const hash: HashFn = (str: any): number => {
   let h = 0
   for (let i = 0, len = str.length; i < len; ++i) {
     const c = str.charCodeAt(i)
-    h = (((h << 5) - h) + c) | 0
+    h = ((h << 5) - h + c) | 0
   }
   return h
 }
@@ -77,8 +77,7 @@ const popcount = (x: number): number => {
   return x & 0x7f
 }
 
-const hashFragment = (shift: number, h: number): number =>
-  (h >>> shift) & MASK
+const hashFragment = (shift: number, h: number): number => (h >>> shift) & MASK
 
 const toBitmap = (x: number): number => 1 << x
 
@@ -140,12 +139,7 @@ const arraySpliceOut = <T>(mutate: boolean, at: number, arr: T[]): T[] => {
  *  @param v Value to insert.
  *  @param arr Array.
  */
-const arraySpliceIn = <T>(
-  mutate: boolean,
-  at: number,
-  v: T,
-  arr: T[]
-): T[] => {
+const arraySpliceIn = <T>(mutate: boolean, at: number, v: T, arr: T[]): T[] => {
   const len = arr.length
   if (mutate) {
     let i = len
@@ -176,8 +170,7 @@ const empty: any = {
   __hamt_isEmpty: true
 }
 
-const isEmptyNode = (x: any): boolean =>
-  x === empty || (x && x.__hamt_isEmpty)
+const isEmptyNode = (x: any): boolean => x === empty || (x && x.__hamt_isEmpty)
 
 /**
  *  Leaf holding a value.
@@ -334,8 +327,8 @@ const mergeLeaves = (
     subH1 === subH2
       ? [mergeLeaves(edit, shift + SIZE, h1, n1, h2, n2)]
       : subH1 < subH2
-        ? [n1, n2]
-        : [n2, n1]
+      ? [n1, n2]
+      : [n2, n1]
   )
 }
 
@@ -440,9 +433,7 @@ function Collision__modify(
     )
     if (list === this.children) return this
 
-    return list.length > 1
-      ? Collision(edit, this.hash, list)
-      : list[0] // collapse single element collision list
+    return list.length > 1 ? Collision(edit, this.hash, list) : list[0] // collapse single element collision list
   }
   const v = f()
   if (v === nothing) return this
@@ -598,13 +589,7 @@ export class HamtMap {
     }
     return newRoot === this._root
       ? this
-      : new HamtMap(
-          this._editable,
-          this._edit,
-          this._config,
-          newRoot,
-          newSize
-        )
+      : new HamtMap(this._editable, this._edit, this._config, newRoot, newSize)
   }
 
   tryGetHash(alt: any, hash: number, key: any): any {
@@ -1096,10 +1081,14 @@ export const forEach = (
   f: (value: any, key: any, map: HamtMap) => void,
   map: HamtMap
 ): void => {
-  fold((_acc: null, value, key) => {
-    f(value, key, map)
-    return null
-  }, null, map)
+  fold(
+    (_acc: null, value, key) => {
+      f(value, key, map)
+      return null
+    },
+    null,
+    map
+  )
 }
 
 /* Aggregate

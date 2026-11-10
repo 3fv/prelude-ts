@@ -3,11 +3,11 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "lib/test",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "ignoreDeprecations": "5.0",
+    "module": "node16",
+    "moduleResolution": "node16",
     "composite": false,
-    "incremental": false
+    "incremental": false,
+    "types": ["node", "mocha"]
   },
-  "include": ["src", "tests"]
+  "include": ["tests", "generated/apidoc-tests"]
 }
