@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com/3fv/prelude-ts.git"
+    "url": "git+https://github.com/3fv/prelude-ts.git"
   },
   "dependencies": {
     "@3fv/guard": "^1.4.38",

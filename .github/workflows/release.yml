@@ -68,10 +68,12 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ needs.version.outputs.ref }}
+      # No `registry-url`: it writes an .npmrc referencing ${NODE_AUTH_TOKEN},
+      # which yarn 1 refuses to load when unset, and trusted publishing
+      # authenticates through OIDC rather than a token.
       - uses: actions/setup-node@v7
         with:
           node-version: 26
-          registry-url: https://registry.npmjs.org
       - run: npm install -g yarn@1.22.22
       - run: yarn install
       - run: yarn build
